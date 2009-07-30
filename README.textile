@@ -1,0 +1,25 @@
+h1. Aaron Massey's dotfiles
+
+This repository contains the various configuration files that I use on Mac OS X, linux, and other unix-like operating systems.  I've also included a couple of my favorite scripts.  Essentially, this is the first thing I install on a new system when I know I'm going to spend some time there.  This repository was inspired by Ryan Bates, whose "dotfiles are hosted here.":http://github.com/ryanb/dotfiles/tree/master
+
+h2. Installation
+
+<pre><code>
+	git clone git://github.com/akmassey/dotfiles ~/.dotfiles
+	cd ~/.dotfiles
+	rake install
+	# edit ~/.gitconfig and personalize it
+</code></pre>
+
+h2. Bash Aliases
+
+h2. Vim Information
+
+h2. Scripts
+
+|_. Script Name |_. Description |
+| bin/colors.sh | A simple bash script to display the terminal colors. |
+
+h2. Other Notes
+
+Should I add screenrc to this?
