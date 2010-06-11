@@ -7,3 +7,6 @@
 [submodule "vim-repos/vim-rails"]
 	path = vim-repos/vim-rails
 	url = http://github.com/tpope/vim-rails.git
+[submodule "vim-repos/vim-cucumber"]
+	path = vim-repos/vim-cucumber
+	url = http://github.com/tpope/vim-cucumber.git
