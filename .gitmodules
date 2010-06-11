@@ -22,3 +22,6 @@
 [submodule "vim-repos/nerdtree"]
 	path = vim-repos/nerdtree
 	url = http://github.com/scrooloose/nerdtree.git
+[submodule "vim-repos/snipmate.vim"]
+	path = vim-repos/snipmate.vim
+	url = http://github.com/msanders/snipmate.vim.git
