@@ -25,3 +25,6 @@
 [submodule "vim-repos/snipmate.vim"]
 	path = vim-repos/snipmate.vim
 	url = http://github.com/msanders/snipmate.vim.git
+[submodule "vim-repos/vim-rdoc"]
+	path = vim-repos/vim-rdoc
+	url = http://github.com/hallison/vim-rdoc.git
