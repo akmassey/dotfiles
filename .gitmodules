@@ -19,3 +19,6 @@
 [submodule "vim-repos/vim-git"]
 	path = vim-repos/vim-git
 	url = http://github.com/tpope/vim-git.git
+[submodule "vim-repos/nerdtree"]
+	path = vim-repos/nerdtree
+	url = http://github.com/scrooloose/nerdtree.git
