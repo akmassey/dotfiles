@@ -10,3 +10,6 @@
 [submodule "vim-repos/vim-cucumber"]
 	path = vim-repos/vim-cucumber
 	url = http://github.com/tpope/vim-cucumber.git
+[submodule "vim-repos/vim-haml"]
+	path = vim-repos/vim-haml
+	url = http://github.com/tpope/vim-haml.git
