@@ -16,3 +16,6 @@
 [submodule "vim-repos/vim-surround"]
 	path = vim-repos/vim-surround
 	url = http://github.com/tpope/vim-surround.git
+[submodule "vim-repos/vim-git"]
+	path = vim-repos/vim-git
+	url = http://github.com/tpope/vim-git.git
