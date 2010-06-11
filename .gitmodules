@@ -13,3 +13,6 @@
 [submodule "vim-repos/vim-haml"]
 	path = vim-repos/vim-haml
 	url = http://github.com/tpope/vim-haml.git
+[submodule "vim-repos/vim-surround"]
+	path = vim-repos/vim-surround
+	url = http://github.com/tpope/vim-surround.git
