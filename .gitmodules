@@ -28,3 +28,6 @@
 [submodule "vim-repos/vim-rdoc"]
 	path = vim-repos/vim-rdoc
 	url = http://github.com/hallison/vim-rdoc.git
+[submodule "vim-repos/supertab"]
+	path = vim-repos/supertab
+	url = http://github.com/ervandew/supertab.git
