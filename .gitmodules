@@ -37,3 +37,6 @@
 [submodule "vim-repos/vim-tcomment"]
 	path = vim-repos/vim-tcomment
 	url = http://github.com/tsaleh/vim-tcomment.git
+[submodule "vim-repos/vim-matchit"]
+	path = vim-repos/vim-matchit
+	url = http://github.com/tsaleh/vim-matchit.git
