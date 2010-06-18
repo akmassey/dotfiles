@@ -31,3 +31,9 @@
 [submodule "vim-repos/supertab"]
 	path = vim-repos/supertab
 	url = http://github.com/ervandew/supertab.git
+[submodule "vim-repos/vim-mru"]
+	path = vim-repos/vim-mru
+	url = http://github.com/ornicar/vim-mru.git
+[submodule "vim-repos/vim-tcomment"]
+	path = vim-repos/vim-tcomment
+	url = http://github.com/tsaleh/vim-tcomment.git
