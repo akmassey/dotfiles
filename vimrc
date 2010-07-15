@@ -49,8 +49,8 @@ if has("autocmd")
   augroup vimrcEx
   au!
 
-  " For all text files set 'textwidth' to 78 characters.
-  " autocmd FileType text setlocal textwidth=78
+  " For all text files set 'textwidth' to 72 characters.
+  autocmd FileType text,markdown,latex,textile,rdoc setlocal textwidth=72
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
@@ -87,6 +87,63 @@ set laststatus=2
 " \ is the leader character
 let mapleader = ","
 
+" Toggle spell checking on and off with `,s`
+nmap <silent> <leader>s :set spell!<CR>
+ 
+" Set region to American English
+set spelllang=en_us
+
+" Open NERDTree
+map <Leader>n :NERDTreeToggle<CR>
+
+" Mappings for window management
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" TODO: This should be in a conditional statement
+" Emulate TextMate's shift left/right key commands (only works in MacVim)
+nmap <D-[> <<
+nmap <D-]> >>
+vmap <D-[> <gv
+vmap <D-]> >gv
+
+" TODO: This should be in a conditional statement
+" Emulate Firefox tab movement using the Command key (only works in MacVim)
+map <D-S-]> gt
+map <D-S-[> gT
+map <D-1> 1gt
+map <D-2> 2gt
+map <D-3> 3gt
+map <D-4> 4gt
+map <D-5> 5gt
+map <D-6> 6gt
+map <D-7> 7gt
+map <D-8> 8gt
+map <D-9> 9gt
+map <D-0> :tablast<CR>
+
+" Command to allow for softwrap
+command! -nargs=* Wrap set  wrap linebreak nolist
+
+" Toggle invisible characters (list can screw up softwrap)
+set listchars=trail:.,tab:>-,eol:$
+set nolist
+noremap <Leader>i :set list!<CR>
+
+" Mappings for movement in softwrapped text
+vmap <D-j> gj
+vmap <D-k> gk
+vmap <D-4> g$
+vmap <D-6> g^
+vmap <D-0> g^
+nmap <D-j> gj
+nmap <D-k> gk
+nmap <D-4> g$
+nmap <D-6> g^
+nmap <D-0> g^
+
 " Edit the README_FOR_APP (makes :R commands work)
 map <Leader>R :e doc/README_FOR_APP<CR>
 
@@ -119,8 +176,8 @@ map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 " Move lines up and down
-map <C-J> :m +1 <CR>
-map <C-K> :m -2 <CR>
+map <C-S-J> :m +1 <CR>
+map <C-S-K> :m -2 <CR>
 
 " Inserts the path of the currently edited file into a command
 " Command mode: Ctrl+P
@@ -146,6 +203,7 @@ imap <C-F> <C-R>=expand("%")<CR>
 " Maps autocomplete to tab
 imap <Tab> <C-N>
 
+" Ruby hash shortcut 
 imap <C-L> <Space>=><Space>
 
 " Display extra whitespace
@@ -166,7 +224,7 @@ if executable("ack")
 endif
 
 " Color scheme
-" colorscheme vividchalk
+colorscheme desert
 " highlight NonText guibg=#060606
 " highlight Folded  guibg=#0A0A0A guifg=#9090D0
 
