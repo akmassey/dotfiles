@@ -49,8 +49,11 @@ if has("autocmd")
   augroup vimrcEx
   au!
 
-  " For all text files set 'textwidth' to 72 characters.
+  " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text,markdown,latex,textile,rdoc setlocal textwidth=72
+
+  " For the new SCSS format from Haml
+  autocmd BufNewFile,BufRead *.scss set filetype=css
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
@@ -102,14 +105,12 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-" TODO: This should be in a conditional statement
 " Emulate TextMate's shift left/right key commands (only works in MacVim)
 nmap <D-[> <<
 nmap <D-]> >>
 vmap <D-[> <gv
 vmap <D-]> >gv
 
-" TODO: This should be in a conditional statement
 " Emulate Firefox tab movement using the Command key (only works in MacVim)
 map <D-S-]> gt
 map <D-S-[> gT
