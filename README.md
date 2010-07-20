@@ -6,10 +6,11 @@ for this repository was shamelessly stolen from Ryan Bates.  The major
 changes in my system are as follows:
 
 * Added a `rake backup` command to back up your files prior to
-  installation.  This will now be performed automatically when you call
+  installation.  This is automatically performed when you call
   `rake install`.
-* GitsSubmodules for various vim plugins that I use.  I frequently use both
-  vim and TextMate, but I have begun going back to vim more often.   
+* Added git submodules for various vim plugins that I use.  I frequently
+  use both vim and TextMate, but I have begun going back to vim more
+  often.   
 * A git submodule for Robby Russell's oh-my-zsh.
 
 
