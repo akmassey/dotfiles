@@ -41,8 +41,23 @@ if has("gui_macvim")
   vmap <D-[> <gv
   vmap <D-]> >gv
 
-  " Use the visual bell
+  " Emulate Firefox tab movement using the Command key
+  map <D-S-]> gt
+  map <D-S-[> gT
+  map <D-1> 1gt
+  map <D-2> 2gt
+  map <D-3> 3gt
+  map <D-4> 4gt
+  map <D-5> 5gt
+  map <D-6> 6gt
+  map <D-7> 7gt
+  map <D-8> 8gt
+  map <D-9> 9gt
+  map <D-0> :tablast<CR>
+
+  " Stop the annoying bell
   set vb
+
 endif
 " }
 
@@ -72,6 +87,9 @@ if has("autocmd")
   au FileType ruby,eruby let g:rubycomplete_rails = 1
   au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
+  " enables ctrl-_ for closing most recently opened tag
+  autocmd Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim 
+
   " Go syntax highlighting
   au BufRead,BufNewFile *.go set filetype=go 
   au! Syntax go source ~/.vim/syntax/go.vim
@@ -82,6 +100,17 @@ endif
 
 " Don't use Ex mode, use Q for formatting
 map Q gqap
+
+map <f6> :!ispell %:e %
+:noremap <silent> <F8> :Tlist<CR>
+
+" NERDtree mappings
+"function OpenNERDTree()
+  "execute ":NERDTree"
+"endfunction
+"command -nargs=0 OpenNERDTree :call OpenNERDTree()
+
+"nmap <ESC>t :OpenNERDTree<CR>
 
 " Shortcut to rapidly toggle `set list`
 nmap <leader>l :set list!<CR>
