@@ -21,6 +21,7 @@ task :install => :backup do
         replace_file(file)
       else
         print "overwrite #{short_dotfile}? [ynaq] "
+
         case $stdin.gets.chomp
         when 'a'
           replace_all = true

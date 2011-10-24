@@ -1,3 +1,42 @@
+# User specific aliases and functions
+
+# General
+alias a.out='./a.out'
+alias ls='ls -G'
+alias ll='ls -lG'
+alias l='ls -lG'
+alias la='ls -lGa'
+alias lh='ls -lh'
+alias hidden='ls -Ga | egrep "^\."'
+alias recall='history | grep'
+#alias gvim='gvim -geometry 80x52'
+
+# Git
+alias git='hub'
+alias gad='git add'
+alias gpl='git pull'
+alias gph='git push'
+alias gdf='git diff'
+alias glg='git log --pretty=oneline'
+alias gct='git commit'
+alias gca='git commit -a'
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias gbr='git branch'
+alias gst='git status'
+alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm"
+
+# Rails
+alias sc='script/console'
+alias ss='script/server'
+alias sg='script/generate'
+alias a='autotest -rails'
+alias tlog='tail -f log/development.log'
+alias scaffold='script/generate nifty_scaffold'
+alias migrate='rake db:migrate db:test:clone && /usr/bin/annotate'
+alias rst='touch tmp/restart.txt'
+
+# Source ZSH Aliases
 . ~/.zsh/aliases
 
 # changing directory to code project
@@ -10,6 +49,3 @@ function railsapp {
   shift 2
   rails $appname -m http://github.com/ryanb/rails-templates/raw/master/$template.rb $@
 }
-
-# misc
-alias reload='. ~/.bash_profile'
