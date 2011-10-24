@@ -1,9 +1,6 @@
 " Reminder -- You can use :scriptnames to see which scripts are executed
 " when loading vim.
 
-" Map the leader to something more reasonable
-let mapleader=","
-
 " Custom Whitespace Modifiers
 set textwidth=76
 
@@ -34,7 +31,7 @@ set statusline=%#warningmsg#%*%<\ %f\ %m%r%y\ %=%-14.(%l,%c%V%)\ %P\
 " colorscheme blackboard
 " colorscheme darkerdesert
 " colorscheme wombat
-colorscheme railscasts2
+" colorscheme railscasts+
 
 " GUI Settings {
 if has("gui_macvim")
@@ -132,3 +129,6 @@ filetype indent on
 " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
+
+" Map the leader to something more reasonable
+let mapleader=","

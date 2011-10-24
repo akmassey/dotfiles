@@ -1,4 +1,3 @@
-colorscheme railscasts2
 set columns=120 " wide enough for NERDtree and a code window
 set lines=55 " my preferred height
 set guifont=Menlo:h13 " my preferred typeface
@@ -28,3 +27,6 @@ map <D-7> 7gt
 map <D-8> 8gt
 map <D-9> 9gt
 map <D-0> :tablast<CR>
+
+" Map the leader to something more reasonable
+let mapleader=","
