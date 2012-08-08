@@ -1,6 +1,3 @@
-[submodule "oh-my-zsh"]
-	path = oh-my-zsh
-	url = http://github.com/robbyrussell/oh-my-zsh.git
 [submodule "vim-repos/vim-markdown"]
 	path = vim-repos/vim-markdown
 	url = http://github.com/tpope/vim-markdown.git
