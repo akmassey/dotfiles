@@ -1,0 +1,50 @@
+#! /usr/bin/env ruby -w
+
+require 'optparse'
+
+op = OptionParser.new do |opts|
+  opts.banner = "Remove files spewed out by tar."
+  opts.define_head "Usage: rm-untarred-files <tarball>"
+  opts.separator ""
+  opts.separator "Examples:"
+  opts.separator "  rm-untarred-files files.tar.gz"
+  opts.separator "  rm-untarred-files files.tar"
+  opts.separator "  rm-untarred-files files.tar.bz2"
+  opts.separator ""
+  opts.separator "Options:"
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end
+
+op.parse!
+
+tarball = ARGV.shift
+
+if tarball.nil?
+  $stderr.puts op
+  exit(-2)
+end
+
+unless FileTest.exists?(tarball)
+  $stderr.puts "#{tarball} does not exist."
+  exit(-1)
+end
+
+if (tarball =~ /.*\.gz$/)
+  files = `tar tzf #{tarball}`
+elsif (tarball =~ /.*\.bz2$/)
+  files = `tar tjf #{tarball}`
+else
+  files = `tar tf #{tarball}`
+end
+
+files.split(/\n/).each do |f|
+  if FileTest.exists?(f)
+    `rm -rf #{f}`
+  else 
+    $stdout.puts "File #{f} does not exist."
+  end
+end
