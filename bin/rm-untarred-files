@@ -13,6 +13,10 @@ op = OptionParser.new do |opts|
   opts.separator ""
   opts.separator "Options:"
 
+  opts.on("-m", "--move [DIR]", "Moves the files into [DIR]") do |dir|
+    @dir = dir
+  end
+
   opts.on_tail("-h", "--help", "Show this message") do
     puts opts
     exit
@@ -41,10 +45,21 @@ else
   files = `tar tf #{tarball}`
 end
 
-files.split(/\n/).each do |f|
-  if FileTest.exists?(f)
-    `rm -rf #{f}`
-  else 
-    $stdout.puts "File #{f} does not exist."
+if @dir.nil?
+  files.split(/\n/).each do |f|
+    if FileTest.exists?(f)
+      `rm -rf #{f}`
+    else 
+      $stdout.puts "File #{f} does not exist."
+    end
+  end
+else
+  `mkdir #{@dir}`
+  files.split(/\n/).each do |f|
+    if FileTest.exists?(f)
+      `mv #{f} #{@dir}`
+    else 
+      $stdout.puts "File #{f} does not exist."
+    end
   end
 end
