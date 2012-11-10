@@ -149,7 +149,7 @@ def prepare_backups
 end
 
 def backup_file(file)
-	system %Q{cp -r #{dotfile_path(file)} #{BACKUP_DIR}}
+  system %Q{cp -r #{dotfile_path(file)} #{BACKUP_DIR}}
   puts "backing up #{short_dotfile_path(file)}"
 end
 
