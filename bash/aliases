@@ -11,8 +11,8 @@ alias hidden='ls -Ga | egrep "^\."'
 alias recall='history | grep'
 #alias gvim='gvim -geometry 80x52'
 
+# TODO: probably should move these to gitconfig
 # Git
-alias git='hub'
 alias gad='git add'
 alias gpl='git pull'
 alias gph='git push'
@@ -36,11 +36,8 @@ alias scaffold='script/generate nifty_scaffold'
 alias migrate='rake db:migrate db:test:clone && /usr/bin/annotate'
 alias rst='touch tmp/restart.txt'
 
-# Source ZSH Aliases
-. ~/.zsh/aliases
-
 # changing directory to code project
-function c { cd ~/code/$1; }
+function c { cd ~/src/$1; }
 
 # alternative to "rails" command to use templates
 function railsapp {

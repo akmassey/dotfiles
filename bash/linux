@@ -1,0 +1,10 @@
+# These settings are used on Linux systems
+
+# Application Specific
+#alias myfortune="fortune /opt/local/share/games/fortune/akm-quotes"
+#alias t="todo.sh -d ~/.todo.cfg"
+
+export EDITOR="/usr/bin/vim"
+export PATH="/home/masseya/bin:$PATH"
+
+export HTML_TIDY="~/.htmltidyrc"
