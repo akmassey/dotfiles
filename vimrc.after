@@ -261,8 +261,10 @@ command! Q q       " Bind :Q to :q
 command! Qall qall " bind :Qall to :qall
 
 " Move based on screen-viewable lines
-nmap k gk
-nmap j gj
+nnoremap k gk 
+nnoremap gk k 
+nnoremap j gj 
+nnoremap gj j
 
 " TODO: add a mapping that allows you to automatically underline with '=' or
 " '-' since that's very useful in markdown files.

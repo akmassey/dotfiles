@@ -1,7 +1,9 @@
 " Splitting my vimrc so it's compatible with Janus
 
-" Map the leader to something more reasonable
+" Map the leader to something more reasonable.  Also, keep the reverse
+" motion command available by mapping it to the old leader key.
 let mapleader=","
+noremap \ ,
 
 " Ensure powerline settings are loaded properly.  More info: 
 "     https://github.com/Lokaltog/vim-powerline
