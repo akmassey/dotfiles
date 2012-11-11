@@ -92,3 +92,17 @@ TODO list for future improvements
 
 Move all the stuff in your bashrc that's specific to Mac OS X to a separate
 file that's included in the main file.
+
+
+Setup zsh
+---------
+
+1. link zshrc
+2. link zsh-theme file
+
+
+Setup Janus
+-----------
+
+1. Setup your ~/.janus directory
+2. remove the other vim plugins
