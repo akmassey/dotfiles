@@ -28,5 +28,5 @@ WHITE="\[\033[00m\]"
 
 if [ "$SHELL" = '/bin/bash' ] || [ "$SHELL" = '/bin/sh' ]
 then
-	export PS1="$GREEN\u@\h $BLUE\W $YELLOW\$(parse_git_branch)\$(parse_svn_branch)$BLUE\$ $WHITE"
+	export PS1="$GREEN\u@\h $BLUE\W \$ $WHITE"
 fi
