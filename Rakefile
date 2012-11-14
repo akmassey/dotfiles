@@ -38,6 +38,9 @@ task :install => :backup do
       link_file(file)
     end
   end
+
+  setup_vundle
+
 end
 
 desc "backup the dot files to the '~/.backup_dotfiles' directory"
@@ -125,6 +128,11 @@ task :uninstall do
   end
 
   Rake::Task[':restore'].invoke
+end
+
+def setup_vundle
+  system %Q{git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle}
+  system %Q{vim +BundleInstall +helptags +qall}
 end
 
 def replace_file(file)

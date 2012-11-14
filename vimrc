@@ -1,3 +1,44 @@
+ set nocompatible               " be iMproved
+ filetype off                   " required!
+
+ set rtp+=~/.vim/bundle/vundle/
+ call vundle#rc()
+
+ " let Vundle manage Vundle
+ " required! 
+ Bundle 'gmarik/vundle'
+
+ " Optional Bundles
+ Bundle 'LaTeX-Box-Team/LaTeX-Box'
+ Bundle 'tpope/vim-fugitive'
+ Bundle 'tpope/vim-endwise'
+ Bundle 'tpope/vim-surround'
+ Bundle 'tpope/vim-rails'
+ Bundle 'tpope/vim-haml'
+ Bundle 'vim-ruby/vim-ruby'
+ Bundle 'mileszs/ack.vim'
+ Bundle 'kien/ctrlp.vim'
+ Bundle 'scrooloose/nerdcommenter'
+ Bundle 'scrooloose/nerdtree'
+ Bundle 'scrooloose/syntastic'
+ Bundle 'ervandew/supertab'
+ Bundle 'tsaleh/vim-align'
+ Bundle 'Lokaltog/vim-powerline'
+ Bundle 'Lokaltog/vim-easymotion'
+ Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+
+ filetype plugin indent on     " required!
+ "
+ " Brief help for Vundle
+ " :BundleList          - list configured bundles
+ " :BundleInstall(!)    - install(update) bundles
+ " :BundleSearch(!) foo - search(or refresh cache first) for foo
+ " :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+ "
+ " see :h vundle for more details or wiki for FAQ
+ " NOTE: comments after Bundle command are not allowed..
+
+
 " Reminder -- You can use :scriptnames to see which scripts are executed
 " when loading vim.
 
@@ -154,11 +195,4 @@ highlight SpecialKey guifg=#4a4a59
 
 " Open URL from this line (OS X only).
 " map <leader>w :call OpenURI()<CR>
-
-" Added for vim-latex plugin
-filetype indent on
-" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
 
