@@ -22,10 +22,12 @@
  Bundle 'scrooloose/nerdtree'
  Bundle 'scrooloose/syntastic'
  Bundle 'ervandew/supertab'
- Bundle 'tsaleh/vim-align'
+ Bundle 'godlygeek/tabular'
+ " Bundle 'tsaleh/vim-align'
  Bundle 'Lokaltog/vim-powerline'
  Bundle 'Lokaltog/vim-easymotion'
  Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+ Bundle 'jnwhiteh/vim-golang'
 
  filetype plugin indent on     " required!
  "
