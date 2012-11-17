@@ -28,6 +28,7 @@
  Bundle 'Lokaltog/vim-easymotion'
  Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
  Bundle 'jnwhiteh/vim-golang'
+ Bundle 'chriskempson/vim-tomorrow-theme'
 
  filetype plugin indent on     " required!
  "
@@ -44,8 +45,15 @@
 " Reminder -- You can use :scriptnames to see which scripts are executed
 " when loading vim.
 
-" Map the leader to something more reasonable
+" Map the leader to something more reasonable.  Also, keep the reverse
+" motion command available by mapping it to the old leader key.
 let mapleader=","
+noremap \ ,
+
+" Ensure powerline settings are loaded properly.  More info: 
+"     https://github.com/Lokaltog/vim-powerline
+let g:Powerline_symbols = 'fancy'
+set encoding=utf-8
 
 " Custom Whitespace Modifiers
 set textwidth=78
@@ -74,10 +82,9 @@ set statusline=%#warningmsg#%*%<\ %f\ %m%r%y\ %=%-14.(%l,%c%V%)\ %P\
 " non-GUI colorschemes
 " set background=dark
 " colorscheme solarized
-" colorscheme blackboard
 " colorscheme darkerdesert
 " colorscheme wombat
-" colorscheme railscasts+
+colorscheme tomorrow-night-bright
 
 " GUI Settings {
 if has("gui_macvim")
@@ -147,6 +154,13 @@ endif
 " Don't use Ex mode, use Q for formatting
 map Q gqap
 
+" Center the screen more easily
+nmap <space> zz
+
+" Center the screen on searches
+nmap n nzz
+nmap N Nzz
+
 map <f6> :!ispell %:e %
 :noremap <silent> <F8> :Tlist<CR>
 
@@ -197,4 +211,125 @@ highlight SpecialKey guifg=#4a4a59
 
 " Open URL from this line (OS X only).
 " map <leader>w :call OpenURI()<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" BEGIN stuff from https://github.com/garybernhardt/dotfiles/blob/master/.vimrc
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Prevent Vim from clobbering the scrollback buffer. See
+" http://www.shallowsky.com/linux/noaltscreen.html
+" set t_ti= t_te=
+
+" Move around splits with <c-hjkl>
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+
+" Insert a hash rocket with <c-l>
+imap <c-l> <space>=><space>
+
+" Clear the search buffer when hitting return
+:nnoremap <CR> :nohlsearch<cr>
+
+" Rename current file
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('Rename this file as: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+" map <leader>n :call RenameFile()<cr>
+
+" Promote variable to let for RSpec
+function! PromoteToLet()
+  :normal! dd
+  " :exec '?^\s*it\>'
+  :normal! P
+  :.s/\(\w\+\) = \(.*\)$/let(:\1) { \2 }/
+  :normal ==
+endfunction
+:command! PromoteToLet :call PromoteToLet()
+:map <leader>p :PromoteToLet<cr>
+
+" Switch Between Test and Production code
+function! OpenTestAlternate()
+  let new_file = AlternateForCurrentFile()
+  exec ':e ' . new_file
+endfunction
+function! AlternateForCurrentFile()
+  let current_file = expand("%")
+  let new_file = current_file
+  let in_spec = match(current_file, '^spec/') != -1
+  let going_to_spec = !in_spec
+  let in_app = match(current_file, '\<controllers\>') != -1 || match(current_file, '\<models\>') != -1 || match(current_file, '\<views\>') != -1
+  if going_to_spec
+    if in_app
+      let new_file = substitute(new_file, '^app/', '', '')
+    end
+    let new_file = substitute(new_file, '\.rb$', '_spec.rb', '')
+    let new_file = 'spec/' . new_file
+  else
+    let new_file = substitute(new_file, '_spec\.rb$', '.rb', '')
+    let new_file = substitute(new_file, '^spec/', '', '')
+    if in_app
+      let new_file = 'app/' . new_file
+    end
+  endif
+  return new_file
+endfunction
+nnoremap <leader>. :call OpenTestAlternate()<cr>
+
+" Map Poppins for formatting markdown files
+nmap <leader>fi :%! poppins<CR>
+
+" Shortcut to writing a file as root from non-root vim
+cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
+
+" Flush CtrlP Cachce
+nnoremap <silent> <leader>P :ClearCtrlPCache<cr>\|:CtrlP<cr>
+
+" Searching options
+set incsearch  " search while you're typing the search string
+set hlsearch   " highlight search results
+set ignorecase " ignore case when searching
+set smartcase  " but if we search for big letters, make search case sensitive again
+
+" Correct for common typos and mis-keys
+command! Q q       " Bind :Q to :q
+command! Qall qall " bind :Qall to :qall
+
+" Move based on screen-viewable lines
+"nnoremap k gk 
+"nnoremap gk k 
+"nnoremap j gj 
+"nnoremap gj j
+
+" Use very magic for searches by default
+nnoremap / /\v
+vnoremap / /\v
+
+" TODO: add a mapping that allows you to automatically underline with '=' or
+" '-' since that's very useful in markdown files.
+"
+" TODO: considering adding a way to remove trailing whitespace
+
+
+" TODO: determine if you want to use these...
+" " map \= to fix space around equal signs
+" map <Leader>= :s/\%V\(\w\)\s*=\s*\(\w\)/\1 = \2/g<CR>
+
+" " map \s to squeeze whitespace (while preserving indentation)
+" map <Leader>s :s/\%V\(\S\)\s\+/\1 /g<CR>
+
+" " map \n to squeeze newlines
+" map <Leader>n :s/\n\n\+/\r\r/g<CR>
+
+" " map \h to split hash arguments into separate lines
+" map <Leader>h :s/\s*,\s\+/,\r/g<CR>
+
+" " map \, to split statements into separate lines
+" map <Leader>, :s/\s*;\s*/\r/g<CR>
 
