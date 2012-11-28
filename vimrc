@@ -50,6 +50,13 @@
 let mapleader=","
 noremap \ ,
 
+" Basic Settings
+set nocompatible      " Use vim, no vi defaults
+set number            " Show line numbers
+set ruler             " Show line and column number
+syntax enable         " Turn on syntax highlighting allowing local overrides
+set encoding=utf-8    " Set default encoding to UTF-8
+
 " Ensure powerline settings are loaded properly.  More info: 
 "     https://github.com/Lokaltog/vim-powerline
 let g:Powerline_symbols = 'fancy'
@@ -57,12 +64,16 @@ set encoding=utf-8
 
 " Custom Whitespace Modifiers
 set textwidth=78
+set backspace=indent,eol,start    " backspace through everything in insert mode
 
 " Show partially typed command sequences.
 set showcmd
 
 " Minimal number of lines to always show above/below the caret.
 set scrolloff=3
+
+" Set the title when you're in terminal mode
+set title
 
 " Statusline.
 " %< truncation point
@@ -111,6 +122,10 @@ if has("gui_macvim")
   " Stop the annoying bell
   set vb
 
+  if has("autocmd")
+    " Automatically resize splits when resizing MacVim window
+    autocmd VimResized * wincmd =
+  endif
 endif
 " }
 
@@ -307,9 +322,16 @@ command! Qall qall " bind :Qall to :qall
 "nnoremap j gj 
 "nnoremap gj j
 
+" Repeat last substitution with &
+nnoremap & :&&<CR>
+xnoremap & :&&<CR>
+
+" TODO: this may not actually be all that useful
 " Use very magic for searches by default
 nnoremap / /\v
 vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
 
 " TODO: add a mapping that allows you to automatically underline with '=' or
 " '-' since that's very useful in markdown files.
@@ -318,18 +340,19 @@ vnoremap / /\v
 
 
 " TODO: determine if you want to use these...
-" " map \= to fix space around equal signs
+" " Fix space around equal signs
 " map <Leader>= :s/\%V\(\w\)\s*=\s*\(\w\)/\1 = \2/g<CR>
 
-" " map \s to squeeze whitespace (while preserving indentation)
+" " Squeeze whitespace (while preserving indentation)
 " map <Leader>s :s/\%V\(\S\)\s\+/\1 /g<CR>
 
-" " map \n to squeeze newlines
+" TODO: There's a way to convert dos to unix using something like this
+" " Squeeze newlines
 " map <Leader>n :s/\n\n\+/\r\r/g<CR>
 
-" " map \h to split hash arguments into separate lines
+" " Split hash arguments into separate lines
 " map <Leader>h :s/\s*,\s\+/,\r/g<CR>
 
-" " map \, to split statements into separate lines
+" " Split statements into separate lines
 " map <Leader>, :s/\s*;\s*/\r/g<CR>
 
