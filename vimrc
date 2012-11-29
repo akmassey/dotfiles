@@ -156,7 +156,7 @@ if has("autocmd")
   au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
   " enables ctrl-_ for closing most recently opened tag
-  autocmd Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim 
+  " autocmd Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim 
 
   " Go syntax highlighting
   au BufRead,BufNewFile *.go set filetype=go 
