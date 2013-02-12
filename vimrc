@@ -57,6 +57,22 @@ set ruler             " Show line and column number
 syntax enable         " Turn on syntax highlighting allowing local overrides
 set encoding=utf-8    " Set default encoding to UTF-8
 
+" Use a single location for temporary files and swap files.
+set backupdir=~/.vim-backup,/tmp
+set directory=~/.vim-swapfiles,/tmp
+
+" Disable output and VCS files
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+"
+" Disable archive files
+set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
+"
+" Ignore bundler and sass cache
+set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
+"
+" Disable temp and backup files
+set wildignore+=*.swp,*~,._*
+
 " Ensure powerline settings are loaded properly.  More info: 
 "     https://github.com/Lokaltog/vim-powerline
 let g:Powerline_symbols = 'fancy'
@@ -179,8 +195,10 @@ nmap <space> zz
 nmap n nzz
 nmap N Nzz
 
-map <f6> :!ispell %:e %
-:noremap <silent> <F8> :Tlist<CR>
+" Toggle spell checking on and off with `,s`
+nmap <silent> <leader>s :set spell!<CR>
+
+set spelllang=en_us
 
 " NERDtree mappings
 "function OpenNERDTree()
@@ -189,6 +207,10 @@ map <f6> :!ispell %:e %
 "command -nargs=0 OpenNERDTree :call OpenNERDTree()
 
 "nmap <ESC>t :OpenNERDTree<CR>
+
+" NERDCommeter Settings
+let NERDSpaceDelims=1
+let NERDRemoveExtraSpaces=1
 
 " Shortcut to rapidly toggle `set list`
 nmap <leader>l :set list!<CR>
