@@ -73,6 +73,13 @@ alias myfortune="fortune /Users/masseya/Documents/Fortunes/akm-quotes"
 alias t="todo.sh -d ~/.todo.cfg"
 alias recall="history | grep"
 alias vanilla="/usr/bin/vim -u NONE -N" # alias for vim without customization
+alias map="xargs -n1"
+
+# list only dotfiles
+alias l.='ls -lGd .*'
+
+# use color with grep
+alias grep='grep --color=auto'
 
 # aliases for opening in various applications
 alias skim="open -a Skim"
@@ -82,6 +89,13 @@ alias bibdesk="open -a BibDesk"
 
 alias linode="ssh masseya@173.255.195.156 -p54"
 
+# show recently changed files
+alias lt="ls -lthGr"
+
+# show / hide hidden files in the Mac OS X Finder
+alias showhidden='defaults write com.apple.finder AppleShowAllFiles True; killall Finder'
+alias hidehidden='defaults write com.apple.finder AppleShowAllFiles False; killall Finder'
+
 myfortune
 
 export EDITOR=/usr/bin/vim
@@ -90,3 +104,8 @@ export EDITOR=/usr/bin/vim
 # statistical language package
 # unfunction R
 
+
+# rbenv configuration
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+export RBENV_ROOT=/usr/local/opt/rbenv
