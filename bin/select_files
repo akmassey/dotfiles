@@ -1,0 +1,126 @@
+#! /usr/bin/env ruby -w
+
+# Copyright (c) 2013 Aaron Massey
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to
+# deal in the Software without restriction, including without limitation the
+# rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+# sell copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+# IN THE SOFTWARE.
+
+require 'optparse'
+require 'pathname'
+require 'fileutils'
+
+
+options = {}
+option_parser = OptionParser.new do |opts|
+  opts.banner = "select_files: chooses files randomly from a given directory"
+  opts.define_head "Usage: select_files.rb [options] "
+  opts.separator ""
+  opts.separator "Examples:"
+  opts.separator "  select_files.rb --number 10 --directory test --output out"
+  opts.separator ""
+
+  opts.on("-v","--verbose") do
+    options[:verbose] = true
+  end
+
+  opts.on("-m","--move", "Move files rather than copying them") do
+    options[:move] = true
+  end
+
+  opts.on("-e [EXT]", "--extension [EXT]", "Limit files to those with the provided extension") do |ext|
+    options[:extension] = ext
+  end
+
+  opts.on("-n [NUM]", "--number [NUM]", "Number of files to select") do |number|
+    options[:number] = number.to_i
+  end
+
+  opts.on("-d [DIR]","--directory [DIR]", "Directory from which to select files") do |dir|
+    options[:directory] = dir
+  end
+
+  opts.on("-o [DIR]","--output [DIR]", "Destination directory to store the output text files") do |dir|
+    if File.exists?(dir)
+      raise ArgumentError,"Destination directory (#{dir}) must not exist.  We don't want to overwrite anything!"
+    end
+
+    options[:output] = dir
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end
+
+option_parser.parse!
+
+if options[:verbose]
+  @@VERBOSE = true
+end
+
+if options[:directory] 
+  directory = options[:directory]
+end 
+
+if options[:number]
+  unless (options[:number] > 0)
+    raise "Must choose a number greater than zero."
+  end
+  number = options[:number]
+end
+
+if options[:extension]
+  extension = "." + options[:extension]
+end
+
+if options[:output] 
+  output = options[:output]
+else 
+  output = File.join(Dir.pwd, "output")
+end
+
+unless File.exists?(directory) and File.directory?(directory) 
+  raise "Invalid directory."
+end
+
+def verbose_puts(string)
+  if @@VERBOSE
+    puts string
+  end
+end
+
+files = Pathname.new(directory).children.select { |c| c.extname == extension }
+
+selected = files.sample(number)
+
+FileUtils.mkdir output
+
+selected.each do |s| 
+  new_file = File.join(output, File.basename(s))
+  if options[:move]
+    verbose_puts "moving #{s} to #{new_file}"
+    FileUtils.mv( s, new_file ) 
+  else
+    verbose_puts "copying #{s} to #{new_file}"
+    FileUtils.cp( s,  new_file)
+  end
+end
+
+puts "files moved"
+
