@@ -13,7 +13,7 @@ task :install => :backup do
 
     dotfile = dotfile_path(file)
     short_dotfile = short_dotfile_path(file)
-    
+
     if File.exist?(dotfile)
       if File.identical?(file, dotfile)
         puts "identical #{short_dotfile}"
@@ -40,7 +40,6 @@ task :install => :backup do
   end
 
   setup_vundle
-
 end
 
 desc "backup the dot files to the '~/.backup_dotfiles' directory"

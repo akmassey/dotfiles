@@ -72,6 +72,8 @@ option_parser.parse!
 
 if options[:verbose]
   @@VERBOSE = true
+else 
+  @@VERBOSE = false
 end
 
 if options[:directory] 
@@ -105,7 +107,11 @@ def verbose_puts(string)
   end
 end
 
-files = Pathname.new(directory).children.select { |c| c.extname == extension }
+if extension
+  files = Pathname.new(directory).children.select { |c| c.extname == extension }
+else 
+  files = Pathname.new(directory).children
+end
 
 selected = files.sample(number)
 
@@ -121,6 +127,4 @@ selected.each do |s|
     FileUtils.cp( s,  new_file)
   end
 end
-
-puts "files moved"
 
