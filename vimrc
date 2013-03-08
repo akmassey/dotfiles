@@ -386,3 +386,10 @@ vnoremap ? ?\v
 " " Split statements into separate lines
 " map <Leader>, :s/\s*;\s*/\r/g<CR>
 
+" start NERDTree when opening vim
+autocmd VimEnter * NERDTree
+autocmd BufEnter * NERDTreeMirror
+autocmd VimEnter * wincmd w
+
+" convert DOS-style carriage returns to UNIX-style
+map <Leader>d :%s/\r/\r/g<CR>
