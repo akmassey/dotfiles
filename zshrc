@@ -71,7 +71,8 @@ unsetopt correct_all
 
 alias myfortune="fortune /Users/masseya/Documents/Fortunes/akm-quotes"
 alias t="todo.sh -d ~/.todo.cfg"
-alias recall="history | grep"
+alias recall="history | grep --color"
+alias pg="ps aux | grep --color"
 alias vanilla="/usr/bin/vim -u NONE -N" # alias for vim without customization
 alias map="xargs -n1"
 
