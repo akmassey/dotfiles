@@ -342,7 +342,8 @@ set ignorecase " ignore case when searching
 set smartcase  " but if we search for big letters, make search case sensitive again
 
 " Correct for common typos and mis-keys
-command! Q q       " Bind :Q to :q
+command! Q q       " bind :Q to :q
+command! W w       " bind :W to :w
 command! Qall qall " bind :Qall to :qall
 
 " Move based on screen-viewable lines
