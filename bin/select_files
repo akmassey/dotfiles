@@ -42,6 +42,10 @@ option_parser = OptionParser.new do |opts|
     options[:move] = true
   end
 
+  opts.on("-f","--force", "Allows files in the output directory to be over-written") do
+    options[:force] = true
+  end
+
   opts.on("-e [EXT]", "--extension [EXT]", "Limit files to those with the provided extension") do |ext|
     options[:extension] = ext
   end
@@ -55,10 +59,6 @@ option_parser = OptionParser.new do |opts|
   end
 
   opts.on("-o [DIR]","--output [DIR]", "Destination directory to store the output text files") do |dir|
-    if File.exists?(dir)
-      raise ArgumentError,"Destination directory (#{dir}) must not exist.  We don't want to overwrite anything!"
-    end
-
     options[:output] = dir
   end
 
@@ -92,6 +92,10 @@ if options[:extension]
 end
 
 if options[:output] 
+  if File.exists?(options[:directory]) and not options[:force]
+    raise ArgumentError,"Destination directory (#{options[:directory]}) must not exist.  We don't want to overwrite anything!"
+  end
+
   output = options[:output]
 else 
   output = File.join(Dir.pwd, "output")
@@ -115,7 +119,9 @@ end
 
 selected = files.sample(number)
 
-FileUtils.mkdir output
+unless File.exists?(output) and File.directory?(output)
+  FileUtils.mkdir output
+end
 
 selected.each do |s| 
   new_file = File.join(output, File.basename(s))
