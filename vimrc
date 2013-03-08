@@ -15,6 +15,7 @@
  Bundle 'tpope/vim-surround'
  Bundle 'tpope/vim-rails'
  Bundle 'tpope/vim-haml'
+ Bundle 'tpope/vim-unimpaired'
  Bundle 'vim-ruby/vim-ruby'
  Bundle 'mileszs/ack.vim'
  Bundle 'kien/ctrlp.vim'
@@ -29,6 +30,9 @@
  Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
  Bundle 'jnwhiteh/vim-golang'
  Bundle 'chriskempson/vim-tomorrow-theme'
+ Bundle 'Valloric/YouCompleteMe'
+ Bundle 'vim-scripts/closetag.vim'
+ Bundle 'vim-scripts/zoom.vim'
 
  filetype plugin indent on     " required!
  "
