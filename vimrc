@@ -9,14 +9,10 @@
  Bundle 'gmarik/vundle'
 
  " Optional Bundles
- Bundle 'LaTeX-Box-Team/LaTeX-Box'
- Bundle 'tpope/vim-fugitive'
  Bundle 'tpope/vim-endwise'
  Bundle 'tpope/vim-surround'
- Bundle 'tpope/vim-rails'
  Bundle 'tpope/vim-haml'
  Bundle 'tpope/vim-unimpaired'
- Bundle 'vim-ruby/vim-ruby'
  Bundle 'mileszs/ack.vim'
  Bundle 'kien/ctrlp.vim'
  Bundle 'scrooloose/nerdcommenter'
@@ -29,10 +25,29 @@
  Bundle 'Lokaltog/vim-easymotion'
  Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
  Bundle 'jnwhiteh/vim-golang'
- Bundle 'chriskempson/vim-tomorrow-theme'
- Bundle 'Valloric/YouCompleteMe'
  Bundle 'vim-scripts/closetag.vim'
  Bundle 'vim-scripts/zoom.vim'
+ Bundle 'sjl/clam.vim'
+
+ " Git related plugins
+ Bundle 'tpope/vim-fugitive'
+ Bundle 'airblade/vim-gitgutter'
+
+ " Ruby related plugins
+ Bundle 'tpope/vim-rails'
+ Bundle 'vim-ruby/vim-ruby'
+ Bundle 'thoughtbot/vim-rspec'
+ 
+ " LaTeX related plugins
+ Bundle 'LaTeX-Box-Team/LaTeX-Box'
+ " Not completely sure I like this one yet...
+ Bundle 'Eckankar/vim-latex-folding'
+
+ " Bundled colorschemes
+ Bundle 'chriskempson/vim-tomorrow-theme'
+ Bundle 'therubymug/vim-pyte'
+ Bundle 'altercation/vim-colors-solarized'
+
 
  filetype plugin indent on     " required!
  "
@@ -275,6 +290,21 @@ imap <c-l> <space>=><space>
 " Clear the search buffer when hitting return
 :nnoremap <CR> :nohlsearch<cr>
 
+" Trim Spaces at end of line
+function StripTrailingWhitespace()
+  if !&binary && &filetype != 'diff'
+    normal mz
+    normal Hmy
+    %s/\s\+$//e
+    normal 'yz<CR>
+    normal `z
+  endif
+endfunction
+map <leader>6 :call StripTrailingWhitespace()<cr>
+
+" Filter Markdown
+map <leader>7 :%!poppins<cr>
+
 " Rename current file
 function! RenameFile()
     let old_name = expand('%')
@@ -345,6 +375,8 @@ set smartcase  " but if we search for big letters, make search case sensitive ag
 command! Q q       " bind :Q to :q
 command! W w       " bind :W to :w
 command! Qall qall " bind :Qall to :qall
+command! Qq qall   " bind :qq to :qall
+command! Wqq wqall " bind :wqq to :qall
 
 " Move based on screen-viewable lines
 "nnoremap k gk 
@@ -393,3 +425,13 @@ autocmd VimEnter * wincmd w
 
 " convert DOS-style carriage returns to UNIX-style
 map <Leader>d :%s/\r/\r/g<CR>
+
+" requires the par program 
+" see: http://vimcasts.org/episodes/formatting-text-with-par/
+" set formatprg=par\ -w78
+" restore the default behavior
+set formatprg=""
+
+" attempt to ignore some LaTeX things in NERDTree
+let NERDTreeIgnore = ['\.acn$', '\.acr$', '\.alg$', '\.aux$', '\.bbl$', '\.blg$', '\.dvi$', '\.fdb_latexmk$', '\.glg$', '\.glo$', '\.gls$', '\.idx$', '\.ilg$', '\.ind$', '\.ist$', '\.lof$', '\.log$', '\.lot$', '\.maf$', '\.mtc$', '\.mtc0$', '\.nav$', '\.nlo$', '\.out$', '\.pdfsync$', '\.ps$', '\.snm$', '\.synctex.gz$', '\.toc$', '\.vrb$', '\.xdy$', '\.tdo$', '\.make$', '\.temp$', '\.d$', '\.fls$' ]
+
