@@ -1,11 +1,12 @@
 [user]
-	name = <%= print("Your Name: "); STDOUT.flush; STDIN.gets.chomp %>
-	email = <%= print("Your Email: "); STDOUT.flush; STDIN.gets.chomp %>
+  name = <%= print("Your Name: "); STDOUT.flush; STDIN.gets.chomp %>
+  email = <%= print("Your Email: "); STDOUT.flush; STDIN.gets.chomp %>
 [alias]
   st = status
   ci = commit
   co = checkout
   di = diff
+  dt = difftool
   dc = diff --cached
   amend = commit --amend
   aa = add --all
@@ -27,16 +28,16 @@
   ds = diff --stat=160,120
   dh1 = diff HEAD~1
 [color]
-	diff = auto
-	status = auto
-	branch = auto
+  diff = auto
+  status = auto
+  branch = auto
 [core]
-	excludesfile = <%= ENV['HOME'] %>/.gitignore
-	editor = vim
-	autocrlf = input
+  excludesfile = <%= ENV['HOME'] %>/.gitignore
+  editor = vim
+  autocrlf = input
 [apply]
-	whitespace = nowarn
+  whitespace = nowarn
 [format]
-	pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
+  pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
 [github]
-	user = <%= print("GitHub Username: "); STDOUT.flush; STDIN.gets.chomp %>
+  user = <%= print("GitHub Username: "); STDOUT.flush; STDIN.gets.chomp %>
