@@ -5,48 +5,70 @@
  call vundle#rc()
 
  " let Vundle manage Vundle
- " required! 
+ " required!
  Bundle 'gmarik/vundle'
 
- " Optional Bundles
+ " Baseline Bundles
  Bundle 'tpope/vim-endwise'
  Bundle 'tpope/vim-surround'
  Bundle 'tpope/vim-haml'
  Bundle 'tpope/vim-unimpaired'
+ Bundle 'tpope/vim-repeat'
+ Bundle 'tpope/vim-commentary'
+ Bundle 'tpope/vim-speeddating'
+ Bundle 'tpope/vim-sensible'
  Bundle 'mileszs/ack.vim'
- Bundle 'kien/ctrlp.vim'
- Bundle 'scrooloose/nerdcommenter'
- Bundle 'scrooloose/nerdtree'
  Bundle 'scrooloose/syntastic'
- Bundle 'ervandew/supertab'
  Bundle 'godlygeek/tabular'
- " Bundle 'tsaleh/vim-align'
  Bundle 'Lokaltog/vim-powerline'
  Bundle 'Lokaltog/vim-easymotion'
- Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
- Bundle 'jnwhiteh/vim-golang'
- Bundle 'vim-scripts/closetag.vim'
+ " Bundle 'jnwhiteh/vim-golang'
  Bundle 'vim-scripts/zoom.vim'
- Bundle 'sjl/clam.vim'
+
+ " neocomplecache and neosnippet are replacements for SuperTab and SnipMate
+ " Bundle 'Shougo/neocomplcache'
+ " Bundle 'Shougo/neosnippet'
+ " Disabling this temporarily to prevent warnings.
+ " Bundle 'honza/vim-snippets'
+
+ " Snipmate, and it's prerequisites
+ Bundle 'ervandew/supertab'
+ " Bundle 'MarcWeber/vim-addon-mw-utils'
+ " Bundle 'tomtom/tlib_vim'
+ " Bundle 'garbas/vim-snipmate'
+
+ " HTML / XML related
+ Bundle 'vim-scripts/closetag.vim'
+
+ " Movement / file browsing plugins
+ Bundle 'scrooloose/nerdtree'
+ Bundle 'kien/ctrlp.vim'
+ Bundle 'vim-scripts/bufexplorer.zip'
+ Bundle 'majutsushi/tagbar'
+
+ " Improved terminal vim
+ Bundle 'sjl/vitality.vim'
 
  " Git related plugins
  Bundle 'tpope/vim-fugitive'
- Bundle 'airblade/vim-gitgutter'
+ " Bundle 'airblade/vim-gitgutter'
 
  " Ruby related plugins
  Bundle 'tpope/vim-rails'
  Bundle 'vim-ruby/vim-ruby'
  Bundle 'thoughtbot/vim-rspec'
- 
- " LaTeX related plugins
- Bundle 'LaTeX-Box-Team/LaTeX-Box'
- " Not completely sure I like this one yet...
- Bundle 'Eckankar/vim-latex-folding'
+ Bundle 'vim-scripts/ruby-matchit'
+
+ " Markdown related plugins
+ " Bundle 'plasticboy/vim-markdown'
+ Bundle 'tpope/vim-markdown'
 
  " Bundled colorschemes
  Bundle 'chriskempson/vim-tomorrow-theme'
- Bundle 'therubymug/vim-pyte'
- Bundle 'altercation/vim-colors-solarized'
+ " Bundle 'therubymug/vim-pyte'
+ " Bundle 'altercation/vim-colors-solarized'
+ " Bundle 'tpope/vim-vividchalk'
+ Bundle 'dsolstad/vim-wombat256i'
 
 
  filetype plugin indent on     " required!
@@ -92,7 +114,7 @@ set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 
-" Ensure powerline settings are loaded properly.  More info: 
+" Ensure powerline settings are loaded properly.  More info:
 "     https://github.com/Lokaltog/vim-powerline
 let g:Powerline_symbols = 'fancy'
 set encoding=utf-8
@@ -126,7 +148,7 @@ set title
 " %c current column
 " %V current virtual column as -{num} if different from %c
 " %P percentage through buffer
-set statusline=%#warningmsg#%*%<\ %f\ %m%r%y\ %=%-14.(%l,%c%V%)\ %P\ 
+set statusline=%#warningmsg#%*%<\ %f\ %m%r%y\ %=%-14.(%l,%c%V%)\ %P\
 
 " non-GUI colorschemes
 " set background=dark
@@ -194,10 +216,10 @@ if has("autocmd")
   au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
   " enables ctrl-_ for closing most recently opened tag
-  " autocmd Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim 
+  autocmd Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim
 
   " Go syntax highlighting
-  au BufRead,BufNewFile *.go set filetype=go 
+  au BufRead,BufNewFile *.go set filetype=go
   au! Syntax go source ~/.vim/syntax/go.vim
 
   " Unbreak 'crontab -e' with Vim: http://drawohara.com/post/6344279/crontab-temp-file-must-be-edited-in-place
@@ -215,35 +237,34 @@ nmap n nzz
 nmap N Nzz
 
 " Toggle spell checking on and off with `,s`
-nmap <silent> <leader>s :set spell!<CR>
+nmap <silent> <Leader>s :set spell!<CR>
 
 set spelllang=en_us
 
-" NERDtree mappings
-"function OpenNERDTree()
-  "execute ":NERDTree"
-"endfunction
-"command -nargs=0 OpenNERDTree :call OpenNERDTree()
+" vim-rspec mappings
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+let g:rspec_command="!rspec --format documentation {spec}"
 
-"nmap <ESC>t :OpenNERDTree<CR>
-
-" NERDCommeter Settings
-let NERDSpaceDelims=1
-let NERDRemoveExtraSpaces=1
-
-" Shortcut to rapidly toggle `set list`
-nmap <leader>l :set list!<CR>
+" Shortcut to toggle invisibles
+nmap <Leader>i :set list!<CR>
 
 " Use the same symbols as TextMate for tabstops and EOLs
 set listchars=nbsp:·,tab:▸\ ,trail:·,eol:¬
 set list!
+
+" Use context-based completion in SuperTab
+let g:SuperTabDefaultCompletionType = "context"
+" Don't compelete at the start of a line or after whitespace
+let g:SuperTabNoCompleteAfter = ['^', '\s']
 
 " Invisible character colors
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=#4a4a59
 
 " Allow easy opening of files in Marked
-:nnoremap <leader>m :silent !open -a Marked.app '%:p'<cr>
+:nnoremap <Leader>m :silent !open -a Marked.app '%:p'<cr>
 
 " OS X only due to use of `open`. Adapted from
 " http://vim.wikia.com/wiki/Open_a_web-browser_with_the_URL_in_the_current_line
@@ -251,10 +272,10 @@ highlight SpecialKey guifg=#4a4a59
 " ruby << EOF
 "   def open_uri
 "     re = %r{(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))*\))+(?:\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))}
-" 
+"
 "     line = VIM::Buffer.current.line
 "     urls = line.scan(re).flatten
-" 
+"
 "     if urls.empty?
 "       VIM::message("No URI found in line.")
 "     else
@@ -263,13 +284,13 @@ highlight SpecialKey guifg=#4a4a59
 "     end
 "   end
 " EOF
-" 
+"
 " function! OpenURI()
 "   ruby open_uri
 " endfunction
 
 " Open URL from this line (OS X only).
-" map <leader>w :call OpenURI()<CR>
+" map <Leader>w :call OpenURI()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " BEGIN stuff from https://github.com/garybernhardt/dotfiles/blob/master/.vimrc
@@ -291,7 +312,7 @@ imap <c-l> <space>=><space>
 :nnoremap <CR> :nohlsearch<cr>
 
 " Trim Spaces at end of line
-function StripTrailingWhitespace()
+function! StripTrailingWhitespace()
   if !&binary && &filetype != 'diff'
     normal mz
     normal Hmy
@@ -300,10 +321,14 @@ function StripTrailingWhitespace()
     normal `z
   endif
 endfunction
-map <leader>6 :call StripTrailingWhitespace()<cr>
+map <Leader>6 :call StripTrailingWhitespace()<cr>
 
 " Filter Markdown
-map <leader>7 :%!poppins<cr>
+map <Leader>7 :%!poppins<cr>
+
+" Toggle NERDTree and Tagbar
+map <Leader>8 :NERDTreeToggle<CR>
+map <Leader>9 :TagbarToggle<CR>
 
 " Rename current file
 function! RenameFile()
@@ -315,7 +340,7 @@ function! RenameFile()
         redraw!
     endif
 endfunction
-" map <leader>n :call RenameFile()<cr>
+map <Leader>n :call RenameFile()<cr>
 
 " Promote variable to let for RSpec
 function! PromoteToLet()
@@ -356,9 +381,6 @@ function! AlternateForCurrentFile()
 endfunction
 nnoremap <leader>. :call OpenTestAlternate()<cr>
 
-" Map Poppins for formatting markdown files
-nmap <leader>fi :%! poppins<CR>
-
 " Shortcut to writing a file as root from non-root vim
 cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
 
@@ -379,10 +401,8 @@ command! Qq qall   " bind :qq to :qall
 command! Wqq wqall " bind :wqq to :qall
 
 " Move based on screen-viewable lines
-"nnoremap k gk 
-"nnoremap gk k 
-"nnoremap j gj 
-"nnoremap gj j
+nnoremap <Up> gk
+nnoremap <Down> gj
 
 " Repeat last substitution with &
 nnoremap & :&&<CR>
@@ -397,9 +417,6 @@ vnoremap ? ?\v
 
 " TODO: add a mapping that allows you to automatically underline with '=' or
 " '-' since that's very useful in markdown files.
-"
-" TODO: considering adding a way to remove trailing whitespace
-
 
 " TODO: determine if you want to use these...
 " " Fix space around equal signs
@@ -408,9 +425,8 @@ vnoremap ? ?\v
 " " Squeeze whitespace (while preserving indentation)
 " map <Leader>s :s/\%V\(\S\)\s\+/\1 /g<CR>
 
-" TODO: There's a way to convert dos to unix using something like this
 " " Squeeze newlines
-" map <Leader>n :s/\n\n\+/\r\r/g<CR>
+map <Leader>5 :s/\n\n\+/\r\r/g<CR>
 
 " " Split hash arguments into separate lines
 " map <Leader>h :s/\s*,\s\+/,\r/g<CR>
@@ -423,15 +439,18 @@ autocmd VimEnter * NERDTree
 autocmd BufEnter * NERDTreeMirror
 autocmd VimEnter * wincmd w
 
-" convert DOS-style carriage returns to UNIX-style
+" Convert DOS-style carriage returns to UNIX-style
 map <Leader>d :%s/\r/\r/g<CR>
 
-" requires the par program 
+" requires the par program
 " see: http://vimcasts.org/episodes/formatting-text-with-par/
 " set formatprg=par\ -w78
 " restore the default behavior
 set formatprg=""
 
-" attempt to ignore some LaTeX things in NERDTree
+" Use Silver Searcher instead of grep
+set grepprg=ag
+
+" Ignore some LaTeX things in NERDTree
 let NERDTreeIgnore = ['\.acn$', '\.acr$', '\.alg$', '\.aux$', '\.bbl$', '\.blg$', '\.dvi$', '\.fdb_latexmk$', '\.glg$', '\.glo$', '\.gls$', '\.idx$', '\.ilg$', '\.ind$', '\.ist$', '\.lof$', '\.log$', '\.lot$', '\.maf$', '\.mtc$', '\.mtc0$', '\.nav$', '\.nlo$', '\.out$', '\.pdfsync$', '\.ps$', '\.snm$', '\.synctex.gz$', '\.toc$', '\.vrb$', '\.xdy$', '\.tdo$', '\.make$', '\.temp$', '\.d$', '\.fls$' ]
 
