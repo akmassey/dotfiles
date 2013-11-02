@@ -14,28 +14,16 @@
  Bundle 'tpope/vim-haml'
  Bundle 'tpope/vim-unimpaired'
  Bundle 'tpope/vim-repeat'
- Bundle 'tpope/vim-commentary'
+ Bundle 'ddollar/nerdcommenter'
  Bundle 'tpope/vim-speeddating'
  Bundle 'tpope/vim-sensible'
  Bundle 'mileszs/ack.vim'
  Bundle 'scrooloose/syntastic'
+ Bundle 'ervandew/supertab'
  Bundle 'godlygeek/tabular'
  Bundle 'Lokaltog/vim-powerline'
  Bundle 'Lokaltog/vim-easymotion'
- " Bundle 'jnwhiteh/vim-golang'
  Bundle 'vim-scripts/zoom.vim'
-
- " neocomplecache and neosnippet are replacements for SuperTab and SnipMate
- " Bundle 'Shougo/neocomplcache'
- " Bundle 'Shougo/neosnippet'
- " Disabling this temporarily to prevent warnings.
- " Bundle 'honza/vim-snippets'
-
- " Snipmate, and it's prerequisites
- Bundle 'ervandew/supertab'
- " Bundle 'MarcWeber/vim-addon-mw-utils'
- " Bundle 'tomtom/tlib_vim'
- " Bundle 'garbas/vim-snipmate'
 
  " HTML / XML related
  Bundle 'vim-scripts/closetag.vim'
@@ -62,6 +50,9 @@
  " Markdown related plugins
  " Bundle 'plasticboy/vim-markdown'
  Bundle 'tpope/vim-markdown'
+
+ " Google Go support
+ Bundle 'ralph/go.vim'
 
  " Bundled colorschemes
  Bundle 'chriskempson/vim-tomorrow-theme'
@@ -215,15 +206,18 @@ if has("autocmd")
   au FileType ruby,eruby let g:rubycomplete_rails = 1
   au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
-  " enables ctrl-_ for closing most recently opened tag
-  autocmd Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim
+  " " enables ctrl-_ for closing most recently opened tag
+  " autocmd Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim
 
   " Go syntax highlighting
   au BufRead,BufNewFile *.go set filetype=go
-  au! Syntax go source ~/.vim/syntax/go.vim
+  " au! Syntax go source ~/.vim/syntax/go.vim
 
   " Unbreak 'crontab -e' with Vim: http://drawohara.com/post/6344279/crontab-temp-file-must-be-edited-in-place
   au FileType crontab set nobackup nowritebackup
+
+  " Use flowed text in email
+  au FileType mail setlocal fo+=aw
 endif
 
 " Don't use Ex mode, use Q for formatting
@@ -237,7 +231,7 @@ nmap n nzz
 nmap N Nzz
 
 " Toggle spell checking on and off with `,s`
-nmap <silent> <Leader>s :set spell!<CR>
+nmap <silent> <Leader>5 :set spell!<CR>
 
 set spelllang=en_us
 
@@ -245,7 +239,7 @@ set spelllang=en_us
 map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
-let g:rspec_command="!rspec --format documentation {spec}"
+let g:rspec_command="!rspec -fp {spec}"
 
 " Shortcut to toggle invisibles
 nmap <Leader>i :set list!<CR>
@@ -255,9 +249,15 @@ set listchars=nbsp:·,tab:▸\ ,trail:·,eol:¬
 set list!
 
 " Use context-based completion in SuperTab
-let g:SuperTabDefaultCompletionType = "context"
+if has("autocmd")
+  autocmd FileType *
+    \ if &omnifunc != '' |
+    \   call SuperTabChain(&omnifunc, "<c-p>") |
+    \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
+    \ endif
+endif
 " Don't compelete at the start of a line or after whitespace
-let g:SuperTabNoCompleteAfter = ['^', '\s']
+let g:SuperTabNoCompleteAfter = ['^', ',', '\\\\s']
 
 " Invisible character colors
 highlight NonText guifg=#4a4a59
@@ -325,6 +325,14 @@ map <Leader>6 :call StripTrailingWhitespace()<cr>
 
 " Filter Markdown
 map <Leader>7 :%!poppins<cr>
+
+" an attempt to get back to the previous line position
+" function! Poppins()
+"   let current_line_position = line(".")
+"   exec ':%!poppins<cr>'
+"   exec ':cursor(' . current_line_position . ', 0)'
+" endfunction
+
 
 " Toggle NERDTree and Tagbar
 map <Leader>8 :NERDTreeToggle<CR>
@@ -435,9 +443,11 @@ map <Leader>5 :s/\n\n\+/\r\r/g<CR>
 " map <Leader>, :s/\s*;\s*/\r/g<CR>
 
 " start NERDTree when opening vim
-autocmd VimEnter * NERDTree
-autocmd BufEnter * NERDTreeMirror
-autocmd VimEnter * wincmd w
+if has("autocmd")
+  autocmd VimEnter * NERDTree
+  autocmd BufEnter * NERDTreeMirror
+  autocmd VimEnter * wincmd w
+endif
 
 " Convert DOS-style carriage returns to UNIX-style
 map <Leader>d :%s/\r/\r/g<CR>

@@ -82,11 +82,12 @@ alias l.='ls -lGd .*'
 # list only files
 alias lsf="ls -l | egrep -v '^d'"
 # list only directories
-alias lsd="ls -l | egrep '^d'"
+alias lsd="ls -ld */"
 
 # use color with grep
 alias grep='grep --color=auto'
 
+# TODO: turn these into functions that can be tab-completed.
 # aliases for opening in various applications
 # alias skim="open -a Skim"
 alias skim="/Applications/Skim.app/Contents/MacOS/Skim"
@@ -103,6 +104,9 @@ alias hidehidden='defaults write com.apple.finder AppleShowAllFiles False; killa
 
 # open something in quick look
 alias ql="qlmanage -p &>/dev/null"
+
+# ensure downloaded attachments go to the desktop
+alias mutt='cd ~/Desktop/ && mutt'
 
 myfortune
 
@@ -146,3 +150,30 @@ alias fixopenwith='/System/Library/Frameworks/CoreServices.framework/Frameworks/
 # quickly grep for TODO, FIXME, etc...
 alias todo='grep -r -n -e TODO -e FIXME -e XXX -e OPTIMIZE -e AKM'
 
+# create an alias for wget to use curl
+alias wget="curl -O --retry 999 --retry-max-time 0 -C -"
+
+
+# Faster Navigation with Marks
+# http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
+export MARKPATH=$HOME/.marks
+function jump { 
+    cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
+}
+function mark { 
+    mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
+}
+function unmark { 
+    rm -i "$MARKPATH/$1"
+}
+function marks {
+    \ls -l "$MARKPATH" | tail -n +2 | sed 's/  / /g' | cut -d' ' -f9- | awk -F ' -> ' '{printf "%-10s -> %s\n", $1, $2}'
+}
+
+# and mark completions
+function _completemarks {
+  reply=($(ls $MARKPATH))
+}
+
+compctl -K _completemarks jump
+compctl -K _completemarks unmark
