@@ -27,19 +27,19 @@ require 'fileutils'
 
 options = {}
 option_parser = OptionParser.new do |opts|
-  opts.banner = "select_files: chooses files randomly from a given directory"
+  opts.banner = "select_files: chooses files randomly from a given directory and copies them to another directory"
   opts.define_head "Usage: select_files.rb [options] "
   opts.separator ""
   opts.separator "Examples:"
   opts.separator "  select_files.rb --number 10 --directory test --output out"
   opts.separator ""
 
-  opts.on("-v","--verbose") do
-    options[:verbose] = true
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options[:verbose] = v
   end
 
-  opts.on("-m","--move", "Move files rather than copying them") do
-    options[:move] = true
+  opts.on("-m","--[no-]move", "Move files rather than copying them") do |m|
+    options[:move] = m
   end
 
   opts.on("-f","--force", "Allows files in the output directory to be over-written") do

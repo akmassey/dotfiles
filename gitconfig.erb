@@ -21,12 +21,26 @@
   la = !git l --all
   div = divergence
   gn = goodness
-  gnc = goodness --cached
   fa = fetch --all
   pom = push origin master
   b = branch
   ds = diff --stat=160,120
   dh1 = diff HEAD~1
+
+  # Show the log, with the diff +'s and -'s
+  lc = log ORIG_HEAD.. --stat --no-merges datetag = "tag `date '+%Y%m%d%H%M'`"
+
+  # The first thing I run on a new project. Who has done the most damage
+  who = shortlog -s --
+
+  # random stuff cargoculted from who knows where
+  graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+  lol = log --pretty=oneline --abbrev-commit --graph --decorate
+  up = !sh -c 'git pull && git log --pretty=format:"%Cred%ae %Creset - %Cyellow%s %Creset%ar" HEAD@{1}..'
+  msgforsvn = log --pretty=format:\"%h\t%b\"
+  svnfind = !sh -c 'git msgforsvn | grep -e \\@$0 | cut -f 1'
+  alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\t=>\t\\2/' | sort
+
 [color]
   diff = auto
   status = auto
