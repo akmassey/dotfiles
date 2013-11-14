@@ -1,77 +1,83 @@
- set nocompatible               " be iMproved
- filetype off                   " required!
+set nocompatible               " be iMproved
+filetype off                   " required!
 
- set rtp+=~/.vim/bundle/vundle/
- call vundle#rc()
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
 
- " let Vundle manage Vundle
- " required!
- Bundle 'gmarik/vundle'
+" let Vundle manage Vundle
+" required!
+Bundle 'gmarik/vundle'
 
- " Baseline Bundles
- Bundle 'tpope/vim-endwise'
- Bundle 'tpope/vim-surround'
- Bundle 'tpope/vim-haml'
- Bundle 'tpope/vim-unimpaired'
- Bundle 'tpope/vim-repeat'
- Bundle 'ddollar/nerdcommenter'
- Bundle 'tpope/vim-speeddating'
- Bundle 'tpope/vim-sensible'
- Bundle 'mileszs/ack.vim'
- Bundle 'scrooloose/syntastic'
- Bundle 'ervandew/supertab'
- Bundle 'godlygeek/tabular'
- Bundle 'Lokaltog/vim-powerline'
- Bundle 'Lokaltog/vim-easymotion'
- Bundle 'vim-scripts/zoom.vim'
+" Baseline Bundles
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-haml'
+Bundle 'tpope/vim-unimpaired'
+Bundle 'tpope/vim-repeat'
+Bundle 'ddollar/nerdcommenter'
+Bundle 'tpope/vim-speeddating'
+Bundle 'tpope/vim-sensible'
+Bundle 'mileszs/ack.vim'
+Bundle 'scrooloose/syntastic'
+Bundle 'ervandew/supertab'
+Bundle 'godlygeek/tabular'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'vim-scripts/zoom.vim'
 
- " HTML / XML related
- Bundle 'vim-scripts/closetag.vim'
+" Snippets
+Bundle "MarcWeber/vim-addon-mw-utils"
+Bundle "tomtom/tlib_vim"
+Bundle "garbas/vim-snipmate"
+Bundle "honza/vim-snippets"
 
- " Movement / file browsing plugins
- Bundle 'scrooloose/nerdtree'
- Bundle 'kien/ctrlp.vim'
- Bundle 'vim-scripts/bufexplorer.zip'
- Bundle 'majutsushi/tagbar'
+" HTML / XML related
+Bundle 'vim-scripts/closetag.vim'
 
- " Improved terminal vim
- Bundle 'sjl/vitality.vim'
+" Movement / file browsing plugins
+Bundle 'scrooloose/nerdtree'
+Bundle 'kien/ctrlp.vim'
+Bundle 'vim-scripts/bufexplorer.zip'
+Bundle 'majutsushi/tagbar'
 
- " Git related plugins
- Bundle 'tpope/vim-fugitive'
- " Bundle 'airblade/vim-gitgutter'
+" Improved terminal vim
+Bundle 'sjl/vitality.vim'
 
- " Ruby related plugins
- Bundle 'tpope/vim-rails'
- Bundle 'vim-ruby/vim-ruby'
- Bundle 'thoughtbot/vim-rspec'
- Bundle 'vim-scripts/ruby-matchit'
+" Git related plugins
+Bundle 'tpope/vim-fugitive'
+" Bundle 'airblade/vim-gitgutter'
 
- " Markdown related plugins
- " Bundle 'plasticboy/vim-markdown'
- Bundle 'tpope/vim-markdown'
+" Ruby related plugins
+Bundle 'tpope/vim-rails'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'thoughtbot/vim-rspec'
+Bundle 'vim-scripts/ruby-matchit'
 
- " Google Go support
- Bundle 'ralph/go.vim'
+" Markdown related plugins
+" Bundle 'plasticboy/vim-markdown'
+Bundle 'tpope/vim-markdown'
 
- " Bundled colorschemes
- Bundle 'chriskempson/vim-tomorrow-theme'
- " Bundle 'therubymug/vim-pyte'
- " Bundle 'altercation/vim-colors-solarized'
- " Bundle 'tpope/vim-vividchalk'
- Bundle 'dsolstad/vim-wombat256i'
+" Google Go support
+Bundle 'ralph/go.vim'
+
+" Bundled colorschemes
+Bundle 'chriskempson/vim-tomorrow-theme'
+" Bundle 'therubymug/vim-pyte'
+" Bundle 'altercation/vim-colors-solarized'
+" Bundle 'tpope/vim-vividchalk'
+Bundle 'dsolstad/vim-wombat256i'
 
 
- filetype plugin indent on     " required!
- "
- " Brief help for Vundle
- " :BundleList          - list configured bundles
- " :BundleInstall(!)    - install(update) bundles
- " :BundleSearch(!) foo - search(or refresh cache first) for foo
- " :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
- "
- " see :h vundle for more details or wiki for FAQ
- " NOTE: comments after Bundle command are not allowed..
+filetype plugin indent on     " required!
+"
+" Brief help for Vundle
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
 
 
 " Reminder -- You can use :scriptnames to see which scripts are executed
@@ -257,7 +263,7 @@ if has("autocmd")
     \ endif
 endif
 " Don't compelete at the start of a line or after whitespace
-let g:SuperTabNoCompleteAfter = ['^', ',', '\\\\s']
+let g:SuperTabNoCompleteAfter = ['^', ',', ';', '\s']
 
 " Invisible character colors
 highlight NonText guifg=#4a4a59
