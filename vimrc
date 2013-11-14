@@ -29,7 +29,7 @@ Bundle 'vim-scripts/zoom.vim'
 Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
 Bundle "garbas/vim-snipmate"
-Bundle "honza/vim-snippets"
+Bundle "akmassey/vim-snippets"
 
 " HTML / XML related
 Bundle 'vim-scripts/closetag.vim'
