@@ -186,3 +186,7 @@ alias j='jump'
 #export GOROOT=$(brew --prefix)/Cellar/go/$GOVERSION
 #export GOPATH=$(brew --prefix)/Cellar/go/$GOVERSION/bin:$HOME/src/go
 export GOPATH=$HOME/src/go
+
+# ensure Homebrew is in your PATH
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/lib:$PATH
+
