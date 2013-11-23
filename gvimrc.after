@@ -6,6 +6,7 @@ set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14
 " set guifont=Menlo\ for\ Powerline:h14
 
 " Colorscheme Selection
-colors tomorrow-night-bright
+colors jellybeans
+" colors tomorrow-night-bright
 " set background=dark
 " colors solarized

@@ -25,7 +25,7 @@ ZSH_THEME="akmassey"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git bundler brew rbenv osx gem)
+plugins=(git bundler brew capistrano rbenv osx gem rails4 golang vundle)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -37,7 +37,6 @@ if [ -x /usr/local/bin/keychain ]; then
 fi
 
 # Display aliases.  Please see this post for more information:
-#
 # http://stackoverflow.com/questions/9299402/echo-all-aliases-in-zsh
 _-accept-line () {
     emulate -L zsh
@@ -55,7 +54,6 @@ zle -N accept-line _-accept-line
 
 
 # A function to repeat a shell command a specified number of times.
-#
 # http://www.stefanoforenza.com/how-to-repeat-a-shell-command-n-times/
 loop () {
     n=$1
@@ -111,6 +109,7 @@ alias mutt='cd ~/Desktop/ && mutt'
 myfortune
 
 export EDITOR=/usr/bin/vim
+
 # used by git-latexdiff
 export PDFVIEWER=/Applications/Skim.app/Contents/MacOS/Skim
 
@@ -179,3 +178,11 @@ compctl -K _completemarks jump
 compctl -K _completemarks unmark
 
 alias j='jump'
+
+
+# Settings for Go Programming
+# http://stackoverflow.com/questions/12843063/install-go-with-brew-and-running-the-gotour
+#export GOVERSION="1.1.2"
+#export GOROOT=$(brew --prefix)/Cellar/go/$GOVERSION
+#export GOPATH=$(brew --prefix)/Cellar/go/$GOVERSION/bin:$HOME/src/go
+export GOPATH=$HOME/src/go

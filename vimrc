@@ -14,7 +14,7 @@ Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'tpope/vim-repeat'
-Bundle 'ddollar/nerdcommenter'
+Bundle 'scrooloose/nerdcommenter'
 Bundle 'tpope/vim-speeddating'
 Bundle 'tpope/vim-sensible'
 Bundle 'mileszs/ack.vim'
@@ -58,14 +58,20 @@ Bundle 'vim-scripts/ruby-matchit'
 Bundle 'tpope/vim-markdown'
 
 " Google Go support
-Bundle 'ralph/go.vim'
+Bundle 'jnwhiteh/vim-golang'
 
 " Bundled colorschemes
 Bundle 'chriskempson/vim-tomorrow-theme'
-" Bundle 'therubymug/vim-pyte'
-" Bundle 'altercation/vim-colors-solarized'
-" Bundle 'tpope/vim-vividchalk'
+Bundle 'therubymug/vim-pyte'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'tpope/vim-vividchalk'
 Bundle 'dsolstad/vim-wombat256i'
+Bundle 'tomasr/molokai'
+Bundle 'nanotech/jellybeans.vim'
+Bundle 'akmassey/vim-codeschool'
+Bundle 'twerth/ir_black'
+Bundle 'jnurmine/Zenburn'
+Bundle 'rainux/vim-desert-warm-256'
 
 
 filetype plugin indent on     " required!
@@ -152,7 +158,8 @@ set statusline=%#warningmsg#%*%<\ %f\ %m%r%y\ %=%-14.(%l,%c%V%)\ %P\
 " colorscheme solarized
 " colorscheme darkerdesert
 " colorscheme wombat
-colorscheme tomorrow-night-bright
+" colorscheme tomorrow-night-bright
+colorscheme jellybeans
 
 " GUI Settings {
 if has("gui_macvim")
@@ -215,9 +222,9 @@ if has("autocmd")
   " " enables ctrl-_ for closing most recently opened tag
   " autocmd Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim
 
-  " Go syntax highlighting
+  " Go syntax highlighting and formatting
   au BufRead,BufNewFile *.go set filetype=go
-  " au! Syntax go source ~/.vim/syntax/go.vim
+  au BufWritePost *.go :silent Fmt
 
   " Unbreak 'crontab -e' with Vim: http://drawohara.com/post/6344279/crontab-temp-file-must-be-edited-in-place
   au FileType crontab set nobackup nowritebackup
@@ -470,3 +477,32 @@ set grepprg=ag
 " Ignore some LaTeX things in NERDTree
 let NERDTreeIgnore = ['\.acn$', '\.acr$', '\.alg$', '\.aux$', '\.bbl$', '\.blg$', '\.dvi$', '\.fdb_latexmk$', '\.glg$', '\.glo$', '\.gls$', '\.idx$', '\.ilg$', '\.ind$', '\.ist$', '\.lof$', '\.log$', '\.lot$', '\.maf$', '\.mtc$', '\.mtc0$', '\.nav$', '\.nlo$', '\.out$', '\.pdfsync$', '\.ps$', '\.snm$', '\.synctex.gz$', '\.toc$', '\.vrb$', '\.xdy$', '\.tdo$', '\.make$', '\.temp$', '\.d$', '\.fls$', '\.run\.xml$', '\.bcf$' ]
 
+
+" gotags configuration for Tagbar
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
