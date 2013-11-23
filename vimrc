@@ -13,6 +13,7 @@ Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-unimpaired'
+Bundle 'tpope/bim-abolish'
 Bundle 'tpope/vim-repeat'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'tpope/vim-speeddating'
@@ -24,6 +25,7 @@ Bundle 'godlygeek/tabular'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'vim-scripts/zoom.vim'
+Bundle 'nelstrom/vim-visual-star-search'
 
 " Snippets
 Bundle "MarcWeber/vim-addon-mw-utils"
@@ -190,6 +192,8 @@ if has("gui_macvim")
     " Automatically resize splits when resizing MacVim window
     autocmd VimResized * wincmd =
   endif
+
+  source ~/.gvimrc.after
 endif
 " }
 
