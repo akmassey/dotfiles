@@ -67,8 +67,11 @@ loop () {
 # Starting to find auto correct rather annoying...
 unsetopt correct_all
 
-alias l="ls -l"
+# aliases for custom fortune files
 alias myfortune="fortune /Users/masseya/Documents/Fortunes/akm-quotes"
+alias update-myfortune="strfile /Users/masseya/Documents/Fortunes/akm-quotes /Users/masseya/Documents/Fortunes/akm-quotes.dat"
+
+alias l="ls -l"
 alias t="todo.sh -d ~/.todo.cfg"
 alias recall="history | grep --color"
 alias pg="ps aux | grep --color"
