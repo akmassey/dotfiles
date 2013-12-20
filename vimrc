@@ -26,6 +26,8 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'vim-scripts/zoom.vim'
 Bundle 'nelstrom/vim-visual-star-search'
+Bundle 'bronson/vim-trailing-whitespace'
+Bundle 'Keithbsmiley/investigate.vim'
 
 " Snippets
 Bundle "MarcWeber/vim-addon-mw-utils"
@@ -185,6 +187,10 @@ if has("gui_macvim")
   map <D-9> 9gt
   map <D-0> :tablast<CR>
 
+  " Setup keybindings for NERDCommenter
+  map <D-/> <plug>NERDCommenterToggle<CR>
+  imap <D-/> <plug>NERDCommenterToggle<CR>i
+
   " Stop the annoying bell
   set vb
 
@@ -251,6 +257,13 @@ nmap N Nzz
 nmap <silent> <Leader>5 :set spell!<CR>
 
 set spelllang=en_us
+
+" NERDCommenter for non-gui setup
+map <Leader>/ <plug>NERDCommenterToggle<CR>
+let NERDSpaceDelims=1
+
+" Create a default build mapping
+map <Leader>b :!./build<CR>
 
 " vim-rspec mappings
 map <Leader>t :call RunCurrentSpecFile()<CR>
@@ -328,6 +341,9 @@ imap <c-l> <space>=><space>
 " Clear the search buffer when hitting return
 :nnoremap <CR> :nohlsearch<cr>
 
+" Enter a blank line without entering insert mode
+:nnoremap <S-Enter> o<Esc>
+
 " Trim Spaces at end of line
 function! StripTrailingWhitespace()
   if !&binary && &filetype != 'diff'
@@ -336,6 +352,7 @@ function! StripTrailingWhitespace()
     %s/\s\+$//e
     normal 'yz<CR>
     normal `z
+    normal noh
   endif
 endfunction
 map <Leader>6 :call StripTrailingWhitespace()<cr>
@@ -451,7 +468,7 @@ vnoremap ? ?\v
 " map <Leader>s :s/\%V\(\S\)\s\+/\1 /g<CR>
 
 " " Squeeze newlines
-map <Leader>5 :s/\n\n\+/\r\r/g<CR>
+map <Leader>4 :s/\n\n\+/\r\r/g<CR>
 
 " " Split hash arguments into separate lines
 " map <Leader>h :s/\s*,\s\+/,\r/g<CR>
@@ -510,3 +527,8 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
 \ }
+
+
+" investigate.vim configuration
+let g:investigate_use_dash=1
+nnoremap <leader>K :call investigate#Investigate()<CR>

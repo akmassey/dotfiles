@@ -25,7 +25,7 @@ ZSH_THEME="akmassey"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git bundler brew capistrano rbenv osx gem rails4 golang vundle)
+plugins=(git bundler brew capistrano rbenv osx gem rails golang vundle)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -70,8 +70,10 @@ unsetopt correct_all
 # aliases for custom fortune files
 alias myfortune="fortune /Users/masseya/Documents/Fortunes/akm-quotes"
 alias update-myfortune="strfile /Users/masseya/Documents/Fortunes/akm-quotes /Users/masseya/Documents/Fortunes/akm-quotes.dat"
+alias cl="clear"
 
 alias l="ls -l"
+alias lh="ls -lh"
 alias t="todo.sh -d ~/.todo.cfg"
 alias recall="history | grep --color"
 alias pg="ps aux | grep --color"
@@ -192,4 +194,8 @@ export GOPATH=$HOME/src/go
 
 # ensure Homebrew is in your PATH
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/lib:$PATH
+
+# remove old Python directory from PATH since I'm not sure where it's being
+# set in the first place
+export PATH=`echo $PATH | sed -e 's/:\/usr\/local\/share\/python\/$//'`
 
