@@ -27,11 +27,13 @@ require 'fileutils'
 
 @options = {}
 option_parser = OptionParser.new do |opts|
-  opts.banner = "brew-notused: prints a list of all installed kegs that aren't used by any other kegs"
-  opts.define_head "Usage: brew-notused"
+  opts.banner = "brew-notused: list installed kegs that aren't used by any other kegs"
+  opts.define_head "Usage: brew notused"
+  opts.separator ""
+  opts.separator "Ideally, these should all be kegs that you've installed for some specific purpose."
   opts.separator ""
   opts.separator "Examples:"
-  opts.separator "  brew-notused"
+  opts.separator "  brew notused -o"
   opts.separator ""
 
   opts.on("-o", "--outdated", "Only search outdated packages") do |o|
