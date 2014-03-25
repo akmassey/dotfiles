@@ -22,7 +22,8 @@ Bundle 'mileszs/ack.vim'
 Bundle 'scrooloose/syntastic'
 Bundle 'ervandew/supertab'
 Bundle 'godlygeek/tabular'
-Bundle 'Lokaltog/vim-powerline'
+" Bundle 'Lokaltog/powerline'
+Bundle 'bling/vim-airline'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'vim-scripts/zoom.vim'
 Bundle 'nelstrom/vim-visual-star-search'
@@ -121,10 +122,9 @@ set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 
-" Ensure powerline settings are loaded properly.  More info:
-"     https://github.com/Lokaltog/vim-powerline
-let g:Powerline_symbols = 'fancy'
-set encoding=utf-8
+" Ensure airline fonts are loaded properly.  More info:
+"     https://github.com/bling/vim-airline
+let g:airline_powerline_fonts = 1
 
 " Custom Whitespace Modifiers
 set textwidth=78
@@ -199,7 +199,7 @@ if has("gui_macvim")
     autocmd VimResized * wincmd =
   endif
 
-  source ~/.gvimrc.after
+  source ~/.gvimrc
 endif
 " }
 
