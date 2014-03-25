@@ -111,6 +111,11 @@ alias ql="qlmanage -p &>/dev/null"
 # ensure downloaded attachments go to the desktop
 alias mutt='cd ~/Desktop/ && mutt'
 
+# compile LaTeX documents automatically
+alias mklatex='latexmk -bibtex -pdf -pvc'
+alias mkxetex='latexmk -xelatex -synctex=1 -pvc'
+alias rmtexmk='latexmk -c && rmtex'
+
 myfortune
 
 export EDITOR=/usr/bin/vim
@@ -199,3 +204,7 @@ export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/lib:$PATH
 # set in the first place
 export PATH=`echo $PATH | sed -e 's/:\/usr\/local\/share\/python\/$//'`
 
+# Simple function for looking up documentation in Dash
+function dash() {
+  open "dash://$1"
+}
