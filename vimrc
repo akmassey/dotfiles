@@ -22,13 +22,16 @@ Bundle 'mileszs/ack.vim'
 Bundle 'scrooloose/syntastic'
 Bundle 'ervandew/supertab'
 Bundle 'godlygeek/tabular'
-" Bundle 'Lokaltog/powerline'
 Bundle 'bling/vim-airline'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'vim-scripts/zoom.vim'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'bronson/vim-trailing-whitespace'
 Bundle 'Keithbsmiley/investigate.vim'
+
+" Dash
+Bundle 'rizzatti/funcoo.vim'
+Bundle 'rizzatti/dash.vim'
 
 " Snippets
 Bundle "MarcWeber/vim-addon-mw-utils"
@@ -263,7 +266,7 @@ map <Leader>/ <plug>NERDCommenterToggle<CR>
 let NERDSpaceDelims=1
 
 " Create a default build mapping
-map <Leader>b :!./build<CR>
+map <Leader>b :w<CR>:!./build<CR>
 
 " vim-rspec mappings
 map <Leader>t :call RunCurrentSpecFile()<CR>
@@ -339,33 +342,33 @@ nnoremap <c-l> <c-w>l
 imap <c-l> <space>=><space>
 
 " Clear the search buffer when hitting return
-:nnoremap <CR> :nohlsearch<cr>
+nnoremap <CR> :nohlsearch<cr>
 
-" Enter a blank line without entering insert mode
-:nnoremap <S-Enter> o<Esc>
+" Enter a blank line above and below without entering insert mode
+nnoremap <S-Enter> O<Esc>jo<Esc>
+" Same as above, but reflow the line
+nnoremap <C-Enter> O<Esc>jo<Esc>kgqap
 
-" Trim Spaces at end of line
-function! StripTrailingWhitespace()
-  if !&binary && &filetype != 'diff'
-    normal mz
-    normal Hmy
-    %s/\s\+$//e
-    normal 'yz<CR>
-    normal `z
-    normal noh
-  endif
+" A command to preserve last search and cursor position after running another
+" command.  See: http://vimcasts.org/episodes/tidying-whitespace/
+function! Preserve(command)
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  execute a:command
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
 endfunction
-map <Leader>6 :call StripTrailingWhitespace()<cr>
+" Strip trailing whitespace
+nmap <Leader>$ :call Preserve("%s/\\s\\+$//e")<CR>
+" Reformat the document
+nmap <Leader>= :call Preserve("normal gg=G")<CR>
 
 " Filter Markdown
-map <Leader>7 :%!poppins<cr>
-
-" an attempt to get back to the previous line position
-" function! Poppins()
-"   let current_line_position = line(".")
-"   exec ':%!poppins<cr>'
-"   exec ':cursor(' . current_line_position . ', 0)'
-" endfunction
+map <Leader>7 :call Preserve("%!poppins")<CR>
 
 
 " Toggle NERDTree and Tagbar
@@ -467,8 +470,15 @@ vnoremap ? ?\v
 " " Squeeze whitespace (while preserving indentation)
 " map <Leader>s :s/\%V\(\S\)\s\+/\1 /g<CR>
 
-" " Squeeze newlines
-map <Leader>4 :s/\n\n\+/\r\r/g<CR>
+" Delete blank lines
+nnoremap <Leader>3 :call Preserve("g/^$/d")<CR>
+vnoremap <Leader>3 :call Preserve("g/^$/d")<CR>
+
+" Convert single spaces after a sentence to double spaces.
+map <Leader>6 :call Preserve("%s/\\.\\s\\([A-Z]\\)/\\.  \\1/g")<CR>
+
+" Squeeze newlines.
+map <Leader>4 :call Preserve("%s/\\n\\n\\+/\\r\\r/g")<CR>
 
 " " Split hash arguments into separate lines
 " map <Leader>h :s/\s*,\s\+/,\r/g<CR>
@@ -484,7 +494,7 @@ if has("autocmd")
 endif
 
 " Convert DOS-style carriage returns to UNIX-style
-map <Leader>d :%s/\r/\r/g<CR>
+map <Leader>d :call Preserve("%s/\\r/\\r/g")<CR>
 
 " requires the par program
 " see: http://vimcasts.org/episodes/formatting-text-with-par/
@@ -532,3 +542,43 @@ let g:tagbar_type_go = {
 " investigate.vim configuration
 let g:investigate_use_dash=1
 nnoremap <leader>K :call investigate#Investigate()<CR>
+
+" Running one-off scripts...
+"
+" See this post for more information: http://www.oinksoft.com/blog/view/6/
+let ft_stdout_mappings = {
+      \'applescript': 'osascript',
+      \'bash': 'bash',
+      \'bc': 'bc',
+      \'haskell': 'runghc',
+      \'javascript': 'node',
+      \'lisp': 'sbcl',
+      \'nodejs': 'node',
+      \'ocaml': 'ocaml',
+      \'perl': 'perl',
+      \'php': 'php',
+      \'python': 'python',
+      \'ruby': 'ruby',
+      \'scheme': 'scheme',
+      \'sh': 'sh',
+      \'sml': 'sml',
+      \'spice': 'ngspice'
+      \}
+
+for ft_name in keys(ft_stdout_mappings)
+  execute 'autocmd Filetype ' . ft_name . ' nnoremap <buffer> <Leader>y :write !'
+        \. ft_stdout_mappings[ft_name] . '<CR>'
+endfor
+
+let ft_execute_mappings = {
+      \'c': 'gcc -o %:r -Wall -std=c99 % && ./%:r',
+      \'erlang': 'escript %',
+      \'pascal': 'fpc % && ./%:r'
+      \}
+
+for ft_name in keys(ft_execute_mappings)
+  execute 'autocmd FileType ' . ft_name
+        \. ' nnoremap <buffer> <Leader>y :write \| !'
+        \. ft_execute_mappings[ft_name] . '<CR>'
+endfor
+
