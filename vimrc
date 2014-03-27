@@ -244,6 +244,10 @@ if has("autocmd")
 
   " Use flowed text in email
   au FileType mail setlocal fo+=aw
+  au FileType mail set spell
+
+  " Ensure spell checking is enabled for LaTeX
+  au FileType plaintex,context,tex,latex set spell
 endif
 
 " Don't use Ex mode, use Q for formatting
@@ -487,7 +491,7 @@ map <Leader>4 :call Preserve("%s/\\n\\n\\+/\\r\\r/g")<CR>
 " map <Leader>, :s/\s*;\s*/\r/g<CR>
 
 " start NERDTree when opening vim
-if has("autocmd")
+if (has("autocmd") && !(&ft=='mail'))
   autocmd VimEnter * NERDTree
   autocmd BufEnter * NERDTreeMirror
   autocmd VimEnter * wincmd w
