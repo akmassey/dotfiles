@@ -1,0 +1,23 @@
+#! /usr/bin/env ruby -w
+
+if ARGV.length != 1
+  puts "Error: Can only accept one argument"
+  exit(-1)
+end
+
+filename = ARGV[0]
+
+if not File.exist?(filename)
+  puts "Error: File does not exist"
+  exit(-1)
+end
+
+extname = File.extname(filename)
+basename = File.basename(filename, extname)
+dirname = File.dirname(filename)
+
+outfile = File.join(dirname, basename + ".pdf")
+
+`enscript -r2GC #{filename} -o - | ps2pdf - #{outfile}`
+
+puts "File written to: #{outfile}"
