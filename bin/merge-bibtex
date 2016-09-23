@@ -1,0 +1,282 @@
+#! /usr/bin/env ruby
+
+# Copyright (c) 2013-2016 Aaron Massey
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to
+# deal in the Software without restriction, including without limitation the
+# rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+# sell copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+# IN THE SOFTWARE.
+
+require 'optparse'
+require 'fileutils'
+
+begin
+  require 'bibtex'
+rescue LoadError
+  puts 'merge-bibtex requires the bibtex-ruby gem'
+  exit
+end
+
+
+@options = { verbose: false, force: false }
+option_parser = OptionParser.new do |opts|
+  opts.banner = "merge-bibtex: merges two or more bibtex files into one"
+  opts.define_head "Usage: merge-bibtex [options] <first_file> <second_file> ..."
+  opts.separator ""
+  opts.separator "Examples:"
+  opts.separator "  merge-bibtex awesome.bib cool.bib -o output.bib"
+  opts.separator "  merge-bibtex first.bib second.bib third.bib -o output.bib"
+  opts.separator ""
+  opts.separator "Normalize references in a single file:"
+  opts.separator "  merge-bibtex single.bib -o output.bib"
+
+  opts.on("-v","--verbose", "Provides additional output about the process") do
+    @options[:verbose] = true
+  end
+
+  opts.on("-o [FILE]","--output [FILE]", "Filename for merged output") do |dir|
+    @options[:output] = dir
+  end
+
+  opts.on("-f", "--force", "Write to the output file even if it exists") do
+    @options[:force] = true
+  end
+
+  # TODO: Ideally, we would eventually like to be albe to replace citations in
+  # a LaTeX file based on the new suggestions found herein.
+  # opts.on("-r [FILE]", "--replace-citations [FILE]", "Replace citations in a *.tex file with the suggestions for the merged bibtex.") do |file|
+    # @options[:replace] = file
+  # end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end
+
+option_parser.parse!
+
+if @options[:output]
+  if File.exists?(@options[:output]) and not @options[:force]
+    raise ArgumentError,"Ouput file (#{@options[:output]}) must not exist.  We don't want to overwrite anything with this shitty script!"
+  end
+
+  @output = @options[:output]
+else
+  @output = File.join(Dir.pwd, "output.bib")
+end
+
+# if @options[:replace]
+  # @latex_filename = @options[:replace]
+  # @latex_file = File.read(@options[:replace])
+  # @replace_citations = true
+# end
+
+def vputs(string)
+  if @options[:verbose]
+    puts string
+  end
+end
+
+# Setup article types and required fields.
+@types = { article: { required: [:author, :title, :journal, :year],
+                      optional: [:volume, :number, :pages, :month, :note, :key]},
+
+# Note: either an author or an editory is required for a book.
+book: { required: [:author, :title, :publisher, :year],
+        optional: [:editor, :volume, :series, :address, :edition, :month,
+                   :note, :key]},
+
+inproceedings: { required: [:author, :title, :booktitle, :year],
+                 optional: [:editor, :pages, :organization, :publisher,
+                            :address, :month, :note, :key]},
+
+incollection: {  required: [:author, :title, :booktitle, :year],
+                 optional: [:editor, :pages, :organization, :publisher,
+                            :address, :month, :note, :key]},
+
+# Note: either an author or an editor is required for an inbook.
+# Also, either a chapter and/or a pages is required.
+inbook: { required: [:author, :title, :chapter, :publisher, :year],
+          optional: [:editor, :pages, :volume, :series, :address, :edition,
+                     :month, :note, :key]},
+
+conference: { required: [:author, :title, :booktitle, :year],
+              optional: [:editor, :pages, :organization, :publisher, :address,
+                         :month, :note, :key]},
+
+booklet: { required: [:title],
+           optional: [:author, :howpublished, :address, :month, :year, :note,
+                      :key]},
+
+manual: { required: [:title],
+          optional: [:author, :organization, :address, :edition, :month,
+                     :year, :note, :key]},
+
+mastersthesis: { required: [:author, :title, :school, :year],
+                 optional: [:address, :month, :note, :key]},
+
+misc: { required: [],
+        optional: [:author, :title, :howpublished, :month, :year, :note, :key]},
+
+phdthesis: { required: [:author, :title, :school, :year],
+             optional: [:address, :month, :note, :key]},
+
+proceedings: { required: [:title, :year],
+               optional: [:editor, :publisher, :organization, :address,
+                          :month, :note, :key]},
+
+techreport: { required: [:author, :title, :institution, :year],
+              optional: [:type, :number, :address, :month, :note, :key]},
+
+unpublished: { required: [:author, :title, :note],
+               optional: [:month, :year, :key]},
+
+}
+
+# Note: keepkey is used by this program to override the suggested citation.
+@universally_optional_fields = [:doi, :url, :keepkey]
+@universally_rejected_fields = [:abstract, :keywords, :file]
+
+input_files = []
+ARGV.each do |input|
+  input_files << input
+end
+
+@new_bib = BibTeX::Bibliography.new
+def load_bibtex(file)
+  bib = BibTeX.open(file)
+
+  bib.each do |b|
+    strip_fields(b)
+    add_entry(b)
+  end
+end
+
+def add_entry(entry)
+  unless @new_bib.include?(entry)
+    new_key = suggested_citation(entry)
+    vputs "Creating suggested citation: #{new_key}"
+    if @new_bib[new_key.to_sym].nil?
+      # if @replace_citations
+        # replace_citation(entry.key, new_key)
+      # end
+      entry.key = new_key
+      @new_bib << entry
+    end
+  end
+end
+
+def strip_fields(entry)
+  # Start by removing the ones we always want to kill
+  entry_fields = entry.field_names
+  entry_fields.each do |f|
+    if @universally_rejected_fields.include?(f)
+      vputs "Entry contains a universally rejected field: #{f}"
+      entry.delete(f)
+    end
+  end
+
+  # if we know the type of bib entry, we can do better
+  unless @types.has_key?(entry.type)
+    vputs "Unknown type of entry: #{entry.type}"
+    return
+  end
+
+  # verify we have the required fields
+  required_fields = @types[entry.type][:required]
+  required_fields.each do |f|
+    raise "Entry is missing required field: #{f}" unless entry_fields.include?(f)
+  end
+  optional_fields = @types[entry.type][:optional]
+
+  # remove anything else we don't really need
+  all_fields = required_fields + optional_fields + @universally_optional_fields
+  entry_fields.each do |f|
+    unless all_fields.include?(f)
+      vputs "Entry contains stupid field: #{f}"
+      entry.delete(f)
+    end
+  end
+end
+
+# def replace_citation(old, new)
+  # return if old == new
+  # vputs "replacing #{old} key with #{new}"
+  # @latex_file.gsub!(old, new)
+# end
+
+def suggested_citation(entry)
+  # Add keepkey = {True} if you want input bib files to retain that key
+  return entry.key if entry.fields[:keepkey]
+
+  if entry.year
+    year = entry.year.to_s
+    raise "Crazy short year, yo..." if year.length < 2
+    year = year[-2] + year[-1]
+  else
+    vputs "Unknown year for #{entry}"
+    year = '-unknown-year'
+  end
+
+  if entry.authors.count == 1
+    return citation_for_one_name(entry.authors.first.last) + year
+  elsif entry.authors.count > 1
+    return citation_for_multiple_names(entry.authors) + year
+  elsif entry.names.count == 1
+    return citation_for_one_name(entry.names.first.last) + year
+  elsif entry.names.count > 1
+    return citation_for_multiple_names(entry.names) + year
+  end
+
+  vputs "Unknown author for #{entry}"
+  return "Anon" + year
+end
+
+def citation_for_one_name(name)
+  n = name.gsub(/[\{\}]/,"")
+  return n[0].upcase + n[1..2].downcase
+end
+
+def citation_for_multiple_names(names)
+  initials = names[0..2].map do |a|
+    a.last.gsub(/[\{\}]/,"")[0].upcase
+  end
+  return initials.join("")
+end
+
+
+input_files.each do |i|
+  vputs "Loading input: #{i}"
+  load_bibtex(i)
+end
+
+if @new_bib.duplicates?
+  vputs "Duplicates found."
+
+  @new_bib.duplicates.each do |d|
+    vputs d
+  end
+
+  raise "unable to continue, duplicates found"
+end
+
+@new_bib.save_to(@output) unless @new_bib.duplicates?
+# if @replace_citations
+  # vputs "replacing latex file"
+  # File.open(@latex_filename, "w") {|file| file.puts @latex_file}
+# end
+

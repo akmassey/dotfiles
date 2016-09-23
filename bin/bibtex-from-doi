@@ -1,0 +1,75 @@
+#! /usr/bin/env ruby
+
+# Copyright (c) 2013-2014 Aaron Massey
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to
+# deal in the Software without restriction, including without limitation the
+# rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+# sell copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+# IN THE SOFTWARE.
+
+require 'optparse'
+require 'bibtex'
+require 'fileutils'
+
+
+options = {}
+option_parser = OptionParser.new do |opts|
+  opts.banner = "bibtex-from-doi: returns the BibTeX entry for a DOI"
+  opts.define_head "Usage: bibtex-from-doi [options] <DOI>"
+  opts.separator ""
+  opts.separator "Examples:"
+  opts.separator "  bibtex-from-doi 10.1007/s00766-009-0089-5"
+  opts.separator ""
+
+  opts.on("-v","--verbose") do
+    @verbose = true
+  end
+
+  opts.on("-o [FILE]","--output [FILE]", "Save BibTeX to this file") do |dir|
+    options[:output] = dir
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end
+
+option_parser.parse!
+
+if options[:output]
+  if File.exists?(options[:output]) and not options[:force]
+    raise ArgumentError,"Ouput file (#{options[:output]}) must not exist.  We don't want to overwrite anything!"
+  end
+
+  @output = options[:output]
+else
+  @output = $stdout
+end
+
+def verbose_puts(string)
+  if @verbose
+    puts string
+  end
+end
+
+
+ARGV.each do |input|
+  doi_url="http://dx.doi.org/#{input}"
+  @output.puts `curl -LH "Accept: text/bibliography; style=bibtex" #{doi_url}`
+end
+
+
